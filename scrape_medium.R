@@ -17,6 +17,7 @@ upb <- progress_bar$new(format = "  downloading [:bar] :percent eta: :eta",
 walk(urls_to_fetch, function(url) {
   htmlstring <- str_c(as.character(read_html(url)), collapse = "")
   dbAppendTable(db, "article", tibble(url = url, html = htmlstring))
+  Sys.sleep(1) # be polite
   upb$tick()
 })
 
