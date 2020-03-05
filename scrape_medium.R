@@ -25,9 +25,9 @@ collected_articles <- dbReadTable(db, "article")
 
 dbDisconnect(db)
 
-core_table <- pmap_dfr(collected_articles, function(url, html) article_core_table(url, html))
+core_table <- pmap_dfr(collected_articles, article_core_table)
 
-article_tags <- pmap_dfr(collected_articles, function(url, html) article_tag_table(url, html))
+article_tags <- pmap_dfr(collected_articles, article_tag_table)
 
-article_links <- pmap_dfr(collected_articles, function(url, html) article_links_table(url, html))
+article_links <- pmap_dfr(collected_articles, article_links_table)
 
