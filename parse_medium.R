@@ -11,8 +11,14 @@ get_body_text <- function(article_html, collapse = "\n") {
 
 get_body_links <- function(article_html) {
   article_html %>% 
-    xml_nodes(css = "p > a") %>% 
+    xml_nodes(xpath = "//article//a") %>% 
     xml_attr("href")
+}
+
+get_body_images <- function(article_html) {
+  article_html %>% 
+    xml_nodes(xpath = "//article//img") %>% 
+    xml_attr("src")
 }
 
 get_article_metadata <- function(article_html) {
@@ -77,4 +83,10 @@ article_links_table <- function(url, html) {
   links <- get_body_links(article_html)
   tibble(url = url, link = links) %>% 
     mutate(external = str_detect(link, "^http"))
+}
+
+article_images_table <- function(url, html) {
+  article_html <- read_html(html)
+  images <- get_body_images(article_html)
+  tibble(url = url, image = images)
 }
