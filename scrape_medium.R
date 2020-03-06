@@ -50,3 +50,11 @@ medium_tf_idf <- medium_tokens %>%
   group_by(url) %>% 
   filter(row_number() <= 15) %>% 
   summarize(terms = str_c(word, collapse = ", "))
+
+library(textreuse)
+
+trc <- TextReuseCorpus(text = core_table$text, meta = core_table %>% select(-text) %>% as.list())
+
+pc <- pairwise_compare(trc, ratio_of_matches)
+
+
