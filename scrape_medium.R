@@ -11,7 +11,7 @@ url_list <- read_lines("links.txt") %>%
   str_match("^(.+)\\?source") %>% .[,2] %>% 
   unique()
 
-db <- dbConnect(SQLite(), "medium.sqlite3")
+db <- dbConnect(SQLite(), "~/Box Sync/medium.sqlite3")
 dbExecute(db, "CREATE TABLE IF NOT EXISTS article(url TEXT UNIQUE NOT NULL, html TEXT NOT NULL)")
 urls_to_fetch <- setdiff(url_list, dbGetQuery(db, "SELECT url FROM article")$url)
 
@@ -26,11 +26,11 @@ walk(urls_to_fetch, function(url) {
 
 collected_articles <- dbReadTable(db, "article")
 
-dbDisconnect(db)
-
 # Parse HTML ----
 
 source("parse_medium.R")
+
+dbWriteTable(db, "core", core_table, temporary=FALSE, overwrite=TRUE)
 
 core_table <- pmap_dfr(collected_articles, article_core_table)
 article_tags <- pmap_dfr(collected_articles, article_tag_table)
