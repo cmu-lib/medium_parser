@@ -28,6 +28,10 @@ get_article_metadata <- function(article_html) {
     fromJSON(flatten = FALSE)
 }
 
+get_article_slug <- function(article_metadata) {
+  URLdecode(str_match(article_metadata[["url"]], "([^/]+)$")[,2])
+}
+
 get_article_date <- function(article_metadata) {
   ymd_hms(article_metadata[["datePublished"]])
 }
@@ -64,6 +68,7 @@ article_core_table <- function(url, html) {
   publisher <- get_article_publisher(md)
   one_row <- tibble(
     url = url,
+    slug = get_article_slug(md),
     text = get_body_text(article_html),
     date_published = get_article_date(md),
     title = get_article_title(md),

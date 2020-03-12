@@ -77,12 +77,7 @@ medium_plan <- drake_plan(
                  ml_ethics = ml_ethics_docs, 
                  ml_no_ethics = ml_no_ethics_docs, 
                  ethics_only = ethics_only_docs))
-  ),
-  keyness_df = target(
-    dplyr::bind_rows(combined_keyness, .id = "version"),
-    transform = combine(combined_keyness)
   )
 )
 
 make(medium_plan)
-
