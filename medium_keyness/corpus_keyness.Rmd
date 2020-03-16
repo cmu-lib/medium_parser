@@ -59,11 +59,11 @@ Note: there's some inevitable error in this diagram, not every intersection can 
 - ethics/ethical is also a relatively distinct set from the rest, with over 1000 posts that don't mention any of our other keywords.
 - Conversely, AI, ML, and "algorithm" overlap heavily, with "big data" a relatively close neighbor to the three.
 
-### Keyness
+## Keyness
 
 Keyness calculates the likelihood ratio of a word appearing in a subset of documents from a corpus compared to the overall distribution of that term in all the documents of the corpus. The following visualizaitions show the the top 20 distinctive words for each subset of the corpus, ranked by the effect size (i.e. just how much more disporportionately the word appears in the subset versus the entire corpus.)
 
-For example, in `ai_ethics_docs` below, "singularity", "sci-fi", "weapons" are significantly more likely to appear in documents that contain both "artificial intelligence" and "ethics/ethical" compared to all other documents. Meanwhile.
+For example, in `ai_ethics_docs` below, "singularity", "sci-fi", "weapons" are significantly more likely to appear in documents that contain both "artificial intelligence" and "ethics/ethical" compared to all other documents. Meanwhile, `ai_no_ethics_docs` - docs that metion AI but do _not_ mention "ethics/ethical", metion "chatbots", "ai-powered", "personalization" etc. far more than the full corpus.
 
 ```{r ai_ethics_keyness, warning=FALSE}
 top_keys <- keyness_df %>% 
@@ -90,7 +90,8 @@ top_keys %>%
   ) %>% 
   datatable()
 ```
-### Keywords in context
+
+## Keywords in context
 
 Here's a sample of the top keywords from the "AI & Ethics" subset of the corpus. If this seems useful, we can set it up to run on Shiny so you can punch in any keyword you want.
 
