@@ -6,9 +6,9 @@ library(glue)
 drake::loadd(core_table)
 
 pwalk(select(core_table, slug, text), function(slug, text) {
-  write_lines(text, path = glue("medium_articles/{slug}.txt"))
+  write_lines(text, path = glue("scraping/medium_articles/{slug}.txt"))
 })
 
 core_table %>% 
   select(-text) %>% 
-  write_tsv(path = "medium_metadata.tsv")
+  write_tsv(path = "scraping/medium_metadata.tsv")

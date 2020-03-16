@@ -7,11 +7,11 @@ library(progress)
 # Download and store HTML ----
 # Writes to SQLITE so we can download once and then have full HTML available for future parsing
 
-url_list <- read_lines("links.txt") %>% 
+url_list <- read_lines("scraping/links.txt") %>% 
   str_match("^(.+)\\?source") %>% .[,2] %>% 
   unique()
 
-db <- dbConnect(SQLite(), "medium.sqlite3")
+db <- dbConnect(SQLite(), "scraping/medium.sqlite3")
 dbExecute(db, "PRAGMA foreign_keys = on")
 dbExecute(db, "CREATE TABLE IF NOT EXISTS article(url TEXT UNIQUE NOT NULL, html TEXT NOT NULL)")
 
@@ -26,7 +26,7 @@ walk(urls_to_fetch, possibly(function(url) {
   upb$tick()
 }, otherwise = NULL))
 
-saveRDS(dbReadTable(db, "article"), file = "medium_html.rds")
+saveRDS(dbReadTable(db, "article"), file = "scraping/medium_html.rds")
 
 # Parse HTML ----
 
@@ -44,7 +44,7 @@ effect_size <- function (n_target, n_reference) {
 }
 
 medium_plan <- drake_plan(
-  collected_articles = readRDS(file = file_in("medium_html.rds")),
+  collected_articles = readRDS(file = file_in("scraping/medium_html.rds")),
   core_table = pmap_dfr(collected_articles, possibly(article_core_table, otherwise = NULL)),
   article_tags = pmap_dfr(collected_articles, possibly(article_tag_table, otherwise = NULL)),
   article_links = pmap_dfr(collected_articles, article_links_table),
