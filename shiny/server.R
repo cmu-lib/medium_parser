@@ -14,11 +14,11 @@ function(input, output, session) {
   # Document IDs that must be kept in
   inclusive_filtered_corpus <- reactive({
     if (!is.null(input$corpus_include)) {
-      reduced_dfm <- dfm_match(base_dfm(), "intelligence")
+      reduced_dfm <- dfm_match(base_dfm(), input$corpus_include)
       inclusive_filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) > 0]
       return(inclusive_filtered_corpus)
     }
-    rownames(trimmed_dfm)
+    rownames(base_dfm())
   })
   
   # Document IDs that must be excluded
@@ -32,22 +32,20 @@ function(input, output, session) {
   })
   
   filtered_corpus_ids <- reactive({
-    withProgress({
       exclusive_filtered_corpus()
-    }, message = "Filtering corpus")
   })
   
   filtered_dfm <- reactive({
-    medium_dfm[filtered_corpus_ids(),]
+    base_dfm()[filtered_corpus_ids(),]
   })
   
   filtered_corpus <- reactive({
-    medium_corpus[filtered_corpus_ids()]
+    base_dfm()[filtered_corpus_ids()]
   })
   
   corpus_metadata <- reactive({
     core_table %>%
-      filter(date_published >= ymd(20140101)) %>% 
+      filter(date_published >= ymd(20150101)) %>% 
       filter(url %in% filtered_corpus_ids())
   })
   
@@ -80,7 +78,7 @@ function(input, output, session) {
   
   corpus_tfidf <- reactive({
     withProgress({
-      trimmed_dfm %>% 
+      filtered_dfm() %>% 
         dfm_tfidf(scheme_tf = "prop") %>% 
         tidy() %>% 
         group_by(document) %>%
