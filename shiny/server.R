@@ -47,6 +47,7 @@ function(input, output, session) {
   
   corpus_metadata <- reactive({
     core_table %>%
+      filter(date_published >= ymd(20140101)) %>% 
       filter(url %in% filtered_corpus_ids())
   })
   
@@ -101,52 +102,56 @@ function(input, output, session) {
   }, escape = FALSE)
   
   # termsovertime ----
-  # 
-  # timegrouped_corpus <- reactive({
-  #   withProgress({
-  #     filtered_corpus() %>%
-  #       left_join(select(corpus_metadata(), document_id, date), by = "document_id") %>%
-  #       mutate(approx_date = round_date(ymd(date), "halfyear")) %>%
-  #       group_by(approx_date) %>%
-  #       mutate(total_docs = n_distinct(document_id)) %>%
-  #       ungroup()
-  #   }, message = "Grouping docs into half-years")
-  # })
-  # 
-  # termsovertime_data <- reactive({
-  #   withProgress({
-  #     timegrouped_corpus() %>%
-  #       filter(gram %in% input$wordchart_tokens) %>%
-  #       group_by(approx_date, gram) %>%
-  #       summarize(
-  #         percent_total = n() / first(total_docs)
-  #       )
-  #   }, message = "Generating terms over time")
-  # })
-  # 
-  # output$termsovertime_chart <- renderPlot({
-  #   req(input$wordchart_tokens)
-  #   termsovertime_data() %>%
-  #     ggplot(aes(x = approx_date, y = percent_total, color = gram)) +
-  #     geom_line() +
-  #     theme_minimal()
-  # }, height = 600)
-  # 
-  # termsovertime_metadata <- reactive({
-  #   filtered_corpus() %>%
-  #     filter(gram %in% input$wordchart_tokens) %>%
-  #     distinct(document_id) %>%
-  #     inner_join(corpus_metadata(), by = "document_id") %>%
-  #     mutate(
-  #       date = ymd(date),
-  #       url = glue("<a href='{url}' target='_blank' rel='noopener noreferrer'>{url}</a>")
-  #     )
-  # })
-  # 
-  # output$termsovertime_metadata <- renderDataTable({
-  #   termsovertime_metadata()
-  # }, escape = FALSE)
-  # 
+
+  timegrouped_corpus <- reactive({
+    withProgress({
+      corpus_metadata() %>%
+        select(url, date_published) %>% 
+        mutate(approx_date = round_date(date_published, "halfyear")) %>%
+        group_by(approx_date) %>%
+        mutate(total_docs = n_distinct(url)) %>%
+        ungroup()
+    }, message = "Grouping docs into half-years")
+  })
+
+  single_termsovertime <- reactive({
+    filtered_dfm() %>% 
+      dfm_match(input$wordchart_tokens) %>% 
+      tidy() %>% 
+      left_join(timegrouped_corpus(), by = c("document" = "url")) %>% 
+      filter(count > 1)
+  })
+  
+  termsovertime_data <- reactive({
+      single_termsovertime() %>% 
+        group_by(approx_date, term) %>%
+        summarize(
+          percent_total = n() / first(total_docs)
+        )
+  })
+
+  output$termsovertime_chart <- renderPlot({
+    req(input$wordchart_tokens)
+    termsovertime_data() %>%
+      ggplot(aes(x = approx_date, y = percent_total, color = term)) +
+      geom_line() +
+      theme_minimal()
+  }, height = 600)
+
+  termsovertime_metadata <- reactive({
+    single_termsovertime() %>%
+      distinct(document) %>% 
+      left_join(core_table, by = c("document" = "url")) %>% 
+      mutate(
+        title = glue("<a href='{document}' target='_blank' rel='noopener noreferrer'>{title}</a>")
+      ) %>% 
+      select(author_name, title, date_published, publisher_name)
+  })
+
+  output$termsovertime_metadata <- renderDataTable({
+    termsovertime_metadata()
+  }, escape = FALSE)
+
   # # Annual TF-IDF ----
   # 
   # yearly_tokens <- reactive({
