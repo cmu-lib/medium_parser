@@ -15,8 +15,8 @@ function(input, output, session) {
   inclusive_filtered_corpus <- reactive({
     if (!is.null(input$corpus_include)) {
       reduced_dfm <- dfm_match(base_dfm(), input$corpus_include)
-      inclusive_filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) > 0]
-      return(inclusive_filtered_corpus)
+      filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) == ncol(reduced_dfm)]
+      return(filtered_corpus)
     }
     rownames(base_dfm())
   })
