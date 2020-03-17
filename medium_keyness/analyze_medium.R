@@ -30,7 +30,7 @@ medium_plan <- drake_plan(
     filter(!(url %in% exclude_articles)) %>% 
     corpus(docid_field = "url", text_field = "text"),
   medium_tokens = medium_corpus %>% 
-    tokens(what = "word", remove_symbols = TRUE, remove_numbers = TRUE, split_hyphens = FALSE) %>% 
+    tokens(what = "word", remove_symbols = TRUE, remove_punct = TRUE, remove_numbers = TRUE, split_hyphens = FALSE) %>% 
     tokens_compound(pattern = phrase(c("artificial intelligence", "big data", "machine learning"))),
   medium_dfm = dfm(medium_tokens),
   regulation_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"regulation"])],
@@ -47,10 +47,11 @@ medium_plan <- drake_plan(
   ml_no_ethics_docs = setdiff(ml_docs, ethics_docs),
   ai_governance_docs = intersect(ai_docs, governance_docs),
   ai_no_governance_docs = setdiff(ai_docs, governance_docs),
-  trimmed_dfm = medium_dfm %>% 
-    dfm_remove(c("ethics", "ethical", "artificial_intelligence", "medium.com", "machine_learning", "big_data", "tags", "ai", "a.i", "ai's", "\\*")) %>% 
+  stopped_dfm = medium_dfm %>% 
     dfm_remove(stopwords("en")) %>% 
     dfm_trim(min_docfreq = 0.01, max_docfreq = 0.9, docfreq_type = "prop"),
+  trimmed_dfm = stopped_dfm %>% 
+    dfm_remove(c("ethics", "ethical", "artificial_intelligence", "medium.com", "machine_learning", "big_data", "tags", "ai", "a.i", "ai's")),
   stemmed_dfm = trimmed_dfm %>% 
     dfm_wordstem(language = "en"),
   keyness = target(
@@ -86,7 +87,8 @@ medium_plan <- drake_plan(
     "stemmed_dfm-ai_no_governance_docs" = keyness_stemmed_dfm_ai_no_governance_docs,
     .id = "type") %>% 
     separate(col = type, into = c("stemming", "target_corpus"), sep = "-") %>% 
-    mutate(stemming = stemming == "stemmed_dfm")
+    mutate(stemming = stemming == "stemmed_dfm"),
+  shiny_data = save(keyness_df, stopped_dfm, trimmed_dfm, stemmed_dfm, medium_corpus, medium_dfm, core_table, file = file_out("shiny/data.rda"))
 )
 
 make(medium_plan)
