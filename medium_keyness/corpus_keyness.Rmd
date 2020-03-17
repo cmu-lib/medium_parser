@@ -9,7 +9,16 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 library(drake)
 library(tidyverse)
-loadd()
+loadd(medium_corpus)
+loadd(keyness_df)
+loadd(ai_docs)
+loadd(ethics_docs)
+loadd(ml_docs)
+loadd(big_data_docs)
+loadd(governance_docs)
+loadd(regulation_docs)
+loadd(algorithm_docs)
+loadd(ai_ethics_docs)
 library(DT)
 library(glue)
 library(quanteda)
@@ -42,15 +51,12 @@ coincidence %>%
   scale_fill_brewer(type = "qual")
 ```
 
-```{r venn}
-
-
+```{r venn, fig.wdith="7"}
 fit1 <- coincidence %>% 
   select(-doc) %>% 
   euler(shape = "ellipse")
 
-plot(fit1, quantities = TRUE)
-
+plot(fit1, quantities = TRUE, legend = TRUE)
 ```
 
 Note: there's some inevitable error in this diagram, not every intersection can be correctly plotted. I'd note:
@@ -70,7 +76,7 @@ top_keys <- keyness_df %>%
   filter(stemming == FALSE) %>% 
   mutate(absolute_effect = abs(effect_size)) %>% 
   group_by(target_corpus) %>% 
-  filter(min_rank(desc(effect_size)) <= 35)
+  filter(row_number(desc(effect_size)) <= 35)
 
 top_keys %>% 
   select(target_corpus, feature) %>% 

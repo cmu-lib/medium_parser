@@ -3,6 +3,7 @@
 library(tidyverse)
 library(drake)
 library(quanteda)
+library(rmarkdown)
 
 source("scraping/parse_medium.R")
 
@@ -17,7 +18,7 @@ effect_size <- function (n_target, n_reference) {
 exclude_articles <- c(
   # This "article" is an aggregate of a lot of medium posts so skews us like crazy
   "https://medium.com/hackernoon/top-150-medium-articles-related-with-big-data-data-science-and-data-visualization-803773728ff7"
-  )
+)
 
 medium_plan <- drake_plan(
   collected_articles = readRDS(file = file_in("scraping/medium_html.rds")),
@@ -35,7 +36,7 @@ medium_plan <- drake_plan(
   regulation_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"regulation"])],
   big_data_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"big_data"])],
   governance_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"governance"])],
-  ai_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"artificial_intelligence"])],
+  ai_docs = rownames(medium_dfm)[(as.logical(medium_dfm[,"artificial_intelligence"]) | as.logical(medium_dfm[,"a.i"]) | as.logical(medium_dfm[,"ai"]))],
   ethics_docs = rownames(medium_dfm)[(as.logical(medium_dfm[,"ethics"]) | as.logical(medium_dfm[,"ethical"]))],
   ml_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"machine_learning"])],
   algorithm_docs = rownames(medium_dfm)[(as.logical(medium_dfm[,"algorithm"]) | as.logical(medium_dfm[,"algorithms"]))],
@@ -47,7 +48,7 @@ medium_plan <- drake_plan(
   ai_governance_docs = intersect(ai_docs, governance_docs),
   ai_no_governance_docs = setdiff(ai_docs, governance_docs),
   trimmed_dfm = medium_dfm %>% 
-    dfm_remove(c("ethics", "ethical", "artificial_intelligence", "medium.com", "machine_learning", "big_data", "tags")) %>% 
+    dfm_remove(c("ethics", "ethical", "artificial_intelligence", "medium.com", "machine_learning", "big_data", "tags", "ai", "a.i", "ai's", "\\*")) %>% 
     dfm_remove(stopwords("en")) %>% 
     dfm_trim(min_docfreq = 0.01, max_docfreq = 0.9, docfreq_type = "prop"),
   stemmed_dfm = trimmed_dfm %>% 
