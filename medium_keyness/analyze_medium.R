@@ -22,7 +22,8 @@ exclude_articles <- c(
 
 medium_plan <- drake_plan(
   collected_articles = readRDS(file = file_in("scraping/medium_html.rds")),
-  core_table = pmap_dfr(collected_articles, possibly(article_core_table, otherwise = NULL)),
+  core_table = pmap_dfr(collected_articles, possibly(article_core_table, otherwise = NULL)) %>% 
+    filter(date_published >= ymd(20150101)),
   article_tags = pmap_dfr(collected_articles, possibly(article_tag_table, otherwise = NULL)),
   article_links = pmap_dfr(collected_articles, article_links_table),
   article_images = pmap_dfr(collected_articles, article_images_table),
