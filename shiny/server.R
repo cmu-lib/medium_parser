@@ -15,7 +15,7 @@ function(input, output, session) {
     str_c(input$corpus_include, collapse = "; ")
   })
   
-  output$excldue_string <- renderText({
+  output$exclude_string <- renderText({
     str_c(input$corpus_exclude, collapse = "; ")
   })
   
@@ -189,16 +189,17 @@ function(input, output, session) {
     log2(percent_a / percent_b)
   }
   
+  censored_dfm <- reactive({
+    trimmed_dfm %>% 
+      dfm_remove(input$corpus_include) %>% 
+      dfm_remove(input$corpus_exclude)
+  })
+  
   keyness_stats <- reactive({
-    censored_dfm <- trimmed_dfm %>% 
-      dfm_remove(c(input$corpus_include, input$corpus_exclude))
-    
-    tk <- textstat_keyness(trimmed_dfm, target = filtered_corpus_ids(), measure = "lr") %>%
+    textstat_keyness(censored_dfm(), target = filtered_corpus_ids(), measure = "lr") %>%
       mutate(effect_size = effect_size(n_target, n_reference)) %>%
       filter(p < 0.05) %>%
       arrange(desc(effect_size))
-    print(tk)
-    return(tk)
   })
   
   output$keyness_table <- renderDataTable({
