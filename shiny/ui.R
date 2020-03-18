@@ -50,6 +50,18 @@ kwic_tab <- tabItem(
   )
 )
 
+keyness_tab <- tabItem(
+  tabName = "keyness",
+  h2("Subcorpus Keyness"),
+  p("How does this selected subcorpus compare to the full Medium corpus?"),
+  p("Including: ", textOutput("include_string", inline = TRUE)),
+  p("Excluding: ", textOutput("exclude_string", inline = FALSE)),
+  box(
+    dataTableOutput("keyness_table"),
+    width = 12
+  )
+)
+
 corpus_inclusive <- selectizeInput("corpus_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include terms")
 
 corpus_exclusive <- selectizeInput("corpus_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must not include terms")
@@ -65,6 +77,7 @@ dash_sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Historical Term Frequency", tabName = "termsovertime", icon = icon("chart-line")),
     menuItem("TF-IDF", tabName = "corpus_tf_idf", icon = icon("sort-amount-down")),
+    menuItem("Keyness", tabName = "keyness", icon = icon("chart-pie")),
     menuItem("KWIC", tabName = "kwic", icon = icon("underline"))
   )
 )
@@ -73,6 +86,7 @@ dash_body <- dashboardBody(
   tabItems(
     termsovertime_tab,
     corpus_tf_idf_tab,
+    keyness_tab,
     kwic_tab
   )
 )

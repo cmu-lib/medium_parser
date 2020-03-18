@@ -11,11 +11,19 @@ function(input, output, session) {
     stopped_dfm
   })
   
+  output$include_string <- renderText({
+    str_c(input$corpus_include, collapse = "; ")
+  })
+  
+  output$excldue_string <- renderText({
+    str_c(input$corpus_exclude, collapse = "; ")
+  })
+  
   # Document IDs that must be kept in
   inclusive_filtered_corpus <- reactive({
     if (!is.null(input$corpus_include)) {
       reduced_dfm <- dfm_match(base_dfm(), input$corpus_include)
-      filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) == ncol(reduced_dfm)]
+      filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm > 0) == ncol(reduced_dfm)]
       return(filtered_corpus)
     }
     rownames(base_dfm())
@@ -45,7 +53,6 @@ function(input, output, session) {
   
   corpus_metadata <- reactive({
     core_table %>%
-      filter(date_published >= ymd(20150101)) %>% 
       filter(url %in% filtered_corpus_ids())
   })
   
@@ -120,8 +127,7 @@ function(input, output, session) {
     filtered_dfm() %>% 
       dfm_match(input$wordchart_tokens) %>% 
       tidy() %>% 
-      left_join(timegrouped_corpus(), by = c("document" = "url")) %>% 
-      filter(count > 0)
+      left_join(timegrouped_corpus(), by = c("document" = "url"))
   })
   
   termsovertime_data <- reactive({
@@ -171,6 +177,32 @@ function(input, output, session) {
   
   output$kwic_table <- renderDataTable({
     kwic_table()
+  }, escape = FALSE)
+  
+  # Keyness ----
+  
+  effect_size <- function (n_target, n_reference) {
+    total_a <- sum(n_target)
+    total_b <- sum(n_reference)
+    percent_a <- ifelse(n_target == 0, 0.5 / total_a, n_target/total_a)
+    percent_b <- ifelse(n_reference == 0, 0.5 / total_b, n_reference/total_b)
+    log2(percent_a / percent_b)
+  }
+  
+  keyness_stats <- reactive({
+    censored_dfm <- trimmed_dfm %>% 
+      dfm_remove(c(input$corpus_include, input$corpus_exclude))
+    
+    tk <- textstat_keyness(trimmed_dfm, target = filtered_corpus_ids(), measure = "lr") %>%
+      mutate(effect_size = effect_size(n_target, n_reference)) %>%
+      filter(p < 0.05) %>%
+      arrange(desc(effect_size))
+    print(tk)
+    return(tk)
+  })
+  
+  output$keyness_table <- renderDataTable({
+    keyness_stats()
   }, escape = FALSE)
   
   # # Annual TF-IDF ----
