@@ -83,6 +83,14 @@ function(input, output, session) {
                          choices = x,
                          selected = NULL,
                          server = TRUE)
+    updateSelectizeInput(session, "keyness_include",
+                         choices = x,
+                         selected = NULL,
+                         server = TRUE)
+    updateSelectizeInput(session, "keyness_exclude",
+                         choices = x,
+                         selected = NULL,
+                         server = TRUE)
   })
   
   # TF-IDF ----
@@ -189,21 +197,59 @@ function(input, output, session) {
     log2(percent_a / percent_b)
   }
   
+  # Document IDs that must be kept in
+  inclusive_reference_corpus <- reactive({
+    if (!is.null(input$keyness_include)) {
+      reduced_dfm <- dfm_match(base_dfm(), input$keyness_include)
+      filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm > 0) == ncol(reduced_dfm)]
+      return(filtered_corpus)
+    }
+    rownames(base_dfm())
+  })
+  
+  # Document IDs that must be excluded
+  exclusive_reference_corpus <- reactive({
+    if (!is.null(input$keyness_exclude)) {
+      reduced_dfm <- dfm_match(base_dfm(), input$keyness_exclude)
+      filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) > 0]
+      return(setdiff(inclusive_filtered_corpus(), filtered_corpus))
+    }
+    inclusive_reference_corpus()
+  })
+  
+  keyness_reference_ids <- reactive({
+    exclusive_reference_corpus()
+  })
+  
+  reference_dfm <- reactive({
+    base_dfm()[keyness_reference_ids(),]
+  })
+  
   censored_dfm <- reactive({
     trimmed_dfm %>% 
       dfm_remove(input$corpus_include) %>% 
       dfm_remove(input$corpus_exclude)
   })
   
+  combined_dfm <- reactive({
+    union_names <- union(rownames(reference_dfm()), rownames(censored_dfm()))
+    rbind(reference_dfm(), censored_dfm())[union_names,]
+  })
+  
+  plot_keyness <- reactive({
+    nrow(combined_dfm() != length(filtered_corpus_ids()))
+  })
+  
   keyness_stats <- reactive({
-    textstat_keyness(censored_dfm(), target = filtered_corpus_ids(), measure = "lr") %>%
+    req(plot_keyness())
+    textstat_keyness(combined_dfm(), target = filtered_corpus_ids(), measure = "lr") %>%
       mutate(effect_size = effect_size(n_target, n_reference)) %>%
       filter(p < 0.05) %>%
       arrange(desc(effect_size))
   })
   
   output$keyness_table <- renderDataTable({
-    keyness_stats()
+      keyness_stats()
   }, escape = FALSE)
   
   # # Annual TF-IDF ----

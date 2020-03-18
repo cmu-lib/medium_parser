@@ -54,8 +54,12 @@ keyness_tab <- tabItem(
   tabName = "keyness",
   h2("Subcorpus Keyness"),
   p("How does this selected subcorpus compare to the full Medium corpus?"),
-  p("Including: ", textOutput("include_string", inline = TRUE)),
-  p("Excluding: ", textOutput("exclude_string", inline = TRUE)),
+  box(
+    width = 6,
+    title = "Define reference corpus",
+    selectizeInput("keyness_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include terms"),
+    selectizeInput("keyness_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must exclude terms")
+  ),
   box(
     dataTableOutput("keyness_table"),
     width = 12
