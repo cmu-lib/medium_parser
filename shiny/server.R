@@ -40,7 +40,7 @@ function(input, output, session) {
   })
   
   filtered_corpus <- reactive({
-    base_dfm()[filtered_corpus_ids()]
+    medium_corpus[filtered_corpus_ids()]
   })
   
   corpus_metadata <- reactive({
@@ -71,6 +71,10 @@ function(input, output, session) {
     updateSelectizeInput(session, "wordchart_tokens",
                          choices = x,
                          selected = c("regulation", "big_data"),
+                         server = TRUE)
+    updateSelectizeInput(session, "kwic_tokens",
+                         choices = x,
+                         selected = NULL,
                          server = TRUE)
   })
   
@@ -148,6 +152,25 @@ function(input, output, session) {
   
   output$termsovertime_metadata <- renderDataTable({
     termsovertime_metadata()
+  }, escape = FALSE)
+  
+  # KWIC ----
+  
+  kwic_table <- reactive({
+    withProgress({
+      req(input$kwic_tokens)
+      kwic_pattern <- input$kwic_tokens
+      
+      kwic(filtered_corpus(), kwic_pattern, window = 15) %>% 
+        select(docname, pre, keyword, post) %>% 
+        group_by(docname) %>% 
+        summarize(phrases = str_c(pre, "<strong>", keyword, "</strong>", post, sep = " ", collapse = "<br/><br/>")) %>% 
+        mutate(docname = glue("<a href='{docname}'>{docname}</a>"))
+    }, message = "Finding keyword in context")
+  })
+  
+  output$kwic_table <- renderDataTable({
+    kwic_table()
   }, escape = FALSE)
   
   # # Annual TF-IDF ----

@@ -37,14 +37,15 @@ termsovertime_tab <- tabItem(
   )
 )
 
-yearly_tfidf_tab <- tabItem(
-  tabName = "yearly_tfidf",
-  h2("TF-IDF by year"),
-  p("This experiment runs TF-IDF again, but tries it on entire years, to find what words are distinctive to particular years.",
-    strong("I am very dubious about this as an approach, but it was a cheap thing to try before diving in to topic modeling...")),
+kwic_tab <- tabItem(
+  tabName = "kwic",
+  h2("Keywords in context"),
+  p("Select a token to view the keywords in context for the selected corpus"),
   list(
     box(
-      dataTableOutput("yearly_tf_idf_table")
+      selectizeInput("kwic_tokens", choices = NULL, selected = NULL, multiple = FALSE, label = "Pick token to see in context"),
+      dataTableOutput("kwic_table"),
+      width = 12
     )
   )
 )
@@ -64,8 +65,7 @@ dash_sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Historical Term Frequency", tabName = "termsovertime", icon = icon("chart-line")),
     menuItem("TF-IDF", tabName = "corpus_tf_idf", icon = icon("sort-amount-down")),
-    menuItem("Annual TF-IDF", tabName = "yearly_tfidf", icon = icon("calendar-check")),
-    menuItem("Topic Models", tabName = "topic_models", icon = icon("object-group"))
+    menuItem("KWIC", tabName = "kwic", icon = icon("underline"))
   )
 )
 
@@ -73,7 +73,7 @@ dash_body <- dashboardBody(
   tabItems(
     termsovertime_tab,
     corpus_tf_idf_tab,
-    yearly_tfidf_tab
+    kwic_tab
   )
 )
 
