@@ -50,47 +50,11 @@ medium_plan <- drake_plan(
   ai_no_governance_docs = setdiff(ai_docs, governance_docs),
   stopped_dfm = medium_dfm %>% 
     dfm_remove(stopwords("en")) %>% 
+    dfm_remove(stopwords("es")) %>% 
     dfm_trim(min_docfreq = 0.01, max_docfreq = 0.9, docfreq_type = "prop"),
-  trimmed_dfm = stopped_dfm %>% 
-    dfm_remove(c("ethics", "ethical", "artificial_intelligence", "medium.com", "machine_learning", "big_data", "tags", "ai", "a.i", "ai's")),
-  stemmed_dfm = trimmed_dfm %>% 
-    dfm_wordstem(language = "en") %>% 
-    dfm_wordstem(language = "es"),
-  keyness = target(
-    textstat_keyness(x, target = fac, measure = "lr") %>%
-      mutate(effect_size = effect_size(n_target, n_reference)) %>%
-      filter(p < 0.05) %>%
-      arrange(desc(effect_size)),
-    transform = cross(
-      x = list("unstemmed" = trimmed_dfm, "stemmed" = stemmed_dfm),
-      fac = list(ai_ethics = ai_ethics_docs, 
-                 ai_no_ethics = ai_no_ethics_docs, 
-                 ai_governance = ai_governance_docs,
-                 ai_no_governance = ai_no_governance_docs,
-                 ml_ethics = ml_ethics_docs, 
-                 ml_no_ethics = ml_no_ethics_docs, 
-                 ethics_only = ethics_only_docs,
-                 governance = governance_docs))
-  ),
-  keyness_df = bind_rows(
-    "trimmed_dfm-ml_no_ethics_docs" = keyness_trimmed_dfm_ml_no_ethics_docs,
-    "trimmed_dfm-ethics_only_docs" = keyness_trimmed_dfm_ethics_only_docs,
-    "trimmed_dfm-ai_ethics_docs" = keyness_trimmed_dfm_ai_ethics_docs,
-    "trimmed_dfm-ml_ethics_docs" = keyness_trimmed_dfm_ml_ethics_docs,
-    "trimmed_dfm-ai_no_ethics_docs" = keyness_trimmed_dfm_ai_no_ethics_docs,
-    "trimmed_dfm-ai_governance_docs" = keyness_trimmed_dfm_ai_governance_docs,
-    "trimmed_dfm-ai_no_governance_docs" = keyness_trimmed_dfm_ai_no_governance_docs,
-    "stemmed_dfm-ethics_only_docs" = keyness_stemmed_dfm_ethics_only_docs,
-    "stemmed_dfm-ai_ethics_docs" = keyness_stemmed_dfm_ai_ethics_docs,
-    "stemmed_dfm-ml_no_ethics_docs" = keyness_stemmed_dfm_ml_no_ethics_docs,
-    "stemmed_dfm-ml_ethics_docs" = keyness_stemmed_dfm_ml_ethics_docs,
-    "stemmed_dfm-ai_no_ethics_docs" = keyness_stemmed_dfm_ai_no_ethics_docs,
-    "stemmed_dfm-ai_governance_docs" = keyness_stemmed_dfm_ai_governance_docs,
-    "stemmed_dfm-ai_no_governance_docs" = keyness_stemmed_dfm_ai_no_governance_docs,
-    .id = "type") %>% 
-    separate(col = type, into = c("stemming", "target_corpus"), sep = "-") %>% 
-    mutate(stemming = stemming == "stemmed_dfm"),
-  shiny_data = save(keyness_df, stopped_dfm, trimmed_dfm, stemmed_dfm, medium_corpus, medium_dfm, core_table, file = file_out("shiny/data.rda"))
+  stemmed_dfm = stopped_dfm %>% 
+    dfm_wordstem(language = "en"),
+  shiny_data = save(stopped_dfm, stemmed_dfm, medium_corpus, core_table, file = file_out("shiny/data.rda"))
 )
 
 make(medium_plan)
