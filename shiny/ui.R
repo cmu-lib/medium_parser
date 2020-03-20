@@ -5,7 +5,7 @@ dash_header <- dashboardHeader(
   title = "Medium Corpus"
 )
 
-core_corpus_selector <- selectizeInput("available_corpora", choices = c("Artifical Intelligence" = "artificial_intelligence", "ethics" = "ethics", "ethical" = "ethical", "machine learning" = "machine_learning", "algorithm" = "algorithm", "goveranance" = "governance", "regulation" = "regulation"), selected = "artificial_intelligence", multiple = TRUE, label = "Original Medium.com search terms")
+core_corpus_selector <- selectizeInput("available_corpora", choices = c("artifical intelligence" = "artificial_intelligence", "ethics" = "ethics", "ethical" = "ethical", "machine learning" = "machine_learning", "algorithm" = "algorithm", "goveranance" = "governance", "regulation" = "regulation", "big data" = "big_Data"), selected = "artificial_intelligence", multiple = TRUE, label = "Original Medium.com search terms")
 
 corpus_tf_idf_tab <- tabItem(
   tabName = "corpus_tf_idf",
