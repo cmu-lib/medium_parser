@@ -7,8 +7,15 @@ library(tidytext)
 
 function(input, output, session) {
   
-  base_dfm <- reactive({
+  original_dfm <- reactive({
     stopped_dfm
+  })
+  
+  base_dfm <- reactive({
+    req(input$available_corpora)
+    selected_corpora_terms <- dfm_match(original_dfm(), input$available_corpora)
+    keep_docs <- rownames(selected_corpora_terms)[rowSums(selected_corpora_terms) > 0]
+    stopped_dfm[keep_docs,]
   })
   
   output$include_string <- renderText({
