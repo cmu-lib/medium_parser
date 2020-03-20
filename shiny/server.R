@@ -157,7 +157,8 @@ function(input, output, session) {
     req(input$wordchart_tokens)
     termsovertime_data() %>%
       ggplot(aes(x = approx_date, y = percent_total, color = term)) +
-      geom_line() +
+      geom_line(size = 2) +
+      scale_color_brewer(palette = "Dark2") +
       theme_minimal()
   }, height = 600)
   
