@@ -15,7 +15,7 @@ function(input, output, session) {
     req(input$available_corpora)
     selected_corpora_terms <- dfm_match(original_dfm(), input$available_corpora)
     keep_docs <- rownames(selected_corpora_terms)[rowSums(selected_corpora_terms) > 0]
-    stopped_dfm[keep_docs,]
+    original_dfm()[keep_docs,]
   })
   
   output$include_string <- renderText({
@@ -204,20 +204,29 @@ function(input, output, session) {
     log2(percent_a / percent_b)
   }
   
+  # Define a reference corpus
+  
+  reference_base_dfm <- reactive({
+    req(input$reference_corpora)
+    selected_corpora_terms <- dfm_match(original_dfm(), input$reference_corpora)
+    keep_docs <- rownames(selected_corpora_terms)[rowSums(selected_corpora_terms) > 0]
+    original_dfm()[keep_docs,]
+  })
+  
   # Document IDs that must be kept in
   inclusive_reference_corpus <- reactive({
     if (!is.null(input$keyness_include)) {
-      reduced_dfm <- dfm_match(base_dfm(), input$keyness_include)
+      reduced_dfm <- dfm_match(reference_base_dfm(), input$keyness_include)
       filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm > 0) == ncol(reduced_dfm)]
       return(filtered_corpus)
     }
-    rownames(base_dfm())
+    rownames(reference_base_dfm())
   })
   
   # Document IDs that must be excluded
   exclusive_reference_corpus <- reactive({
     if (!is.null(input$keyness_exclude)) {
-      reduced_dfm <- dfm_match(base_dfm(), input$keyness_exclude)
+      reduced_dfm <- dfm_match(reference_base_dfm(), input$keyness_exclude)
       filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) > 0]
       return(setdiff(inclusive_filtered_corpus(), filtered_corpus))
     }
@@ -229,30 +238,24 @@ function(input, output, session) {
   })
   
   reference_dfm <- reactive({
-    base_dfm()[keyness_reference_ids(),]
-  })
-  
-  censored_dfm <- reactive({
-    trimmed_dfm %>% 
-      dfm_remove(input$corpus_include) %>% 
-      dfm_remove(input$corpus_exclude)
+    reference_base_dfm()[keyness_reference_ids(),]
   })
   
   combined_dfm <- reactive({
-    union_names <- union(rownames(reference_dfm()), rownames(censored_dfm()))
-    rbind(reference_dfm(), censored_dfm())[union_names,]
-  })
-  
-  plot_keyness <- reactive({
-    nrow(combined_dfm() != length(filtered_corpus_ids()))
+    union_names <- union(rownames(reference_dfm()), rownames(filtered_dfm()))
+    rbind(reference_dfm(), filtered_dfm())[union_names,] %>% 
+      dfm_remove(c(input$keyness_include, input$keyness_exclude, input$reference_corpora, input$available_corpora))
   })
   
   keyness_stats <- reactive({
-    req(plot_keyness())
+    tryCatch({
     textstat_keyness(combined_dfm(), target = filtered_corpus_ids(), measure = "lr") %>%
       mutate(effect_size = effect_size(n_target, n_reference)) %>%
       filter(p < 0.05) %>%
       arrange(desc(effect_size))
+    }, error = function(e) {
+      safeError(stop("The reference corpus must contain some documents not in the target corpus"))
+    })
   })
   
   output$keyness_table <- renderDataTable({
