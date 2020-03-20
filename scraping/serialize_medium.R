@@ -12,3 +12,5 @@ pwalk(select(core_table, slug, text), function(slug, text) {
 core_table %>% 
   select(-text) %>% 
   write_tsv(path = "scraping/medium_metadata.tsv")
+
+write_tsv(article_links, path = "article_links.tsv")

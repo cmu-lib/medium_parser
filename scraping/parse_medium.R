@@ -86,8 +86,16 @@ article_tag_table <- function(url, html) {
 article_links_table <- function(url, html) {
   article_html <- read_html(html)
   links <- get_body_links(article_html)
-  tibble(url = url, link = links) %>% 
-    mutate(external = str_detect(link, "^http"))
+  tibble(url = url, link = links) %>%
+    filter(!str_detect(link, "medium\\.com")) %>% 
+    mutate(
+      external = str_detect(link, "^http"),
+      medium_user = str_detect(link, "/@"),
+      original_domain = str_match(url, "(^https?://.+?)/")[,2],
+      no_query = str_match(link, "^([^?]+)")[,2],
+      desired_domain = if_else(medium_user, "https://medium.com", original_domain),
+      full_link = if_else(external, no_query, str_c(original_domain, no_query, sep = ""))) %>% 
+    select(url, link = full_link)
 }
 
 article_images_table <- function(url, html) {
