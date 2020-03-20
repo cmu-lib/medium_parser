@@ -54,7 +54,8 @@ medium_plan <- drake_plan(
   trimmed_dfm = stopped_dfm %>% 
     dfm_remove(c("ethics", "ethical", "artificial_intelligence", "medium.com", "machine_learning", "big_data", "tags", "ai", "a.i", "ai's")),
   stemmed_dfm = trimmed_dfm %>% 
-    dfm_wordstem(language = "en"),
+    dfm_wordstem(language = "en") %>% 
+    dfm_wordstem(language = "es"),
   keyness = target(
     textstat_keyness(x, target = fac, measure = "lr") %>%
       mutate(effect_size = effect_size(n_target, n_reference)) %>%
