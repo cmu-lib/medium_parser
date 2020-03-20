@@ -88,7 +88,7 @@ corpus_data <- div(
 )
 
 dash_sidebar <- dashboardSidebar(
-    h3("Define target corpus"),
+  h3("Define target corpus"),
   core_corpus_selector,
   corpus_inclusive,
   corpus_exclusive,

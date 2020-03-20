@@ -248,17 +248,21 @@ function(input, output, session) {
   })
   
   keyness_stats <- reactive({
-    tryCatch({
-    textstat_keyness(combined_dfm(), target = filtered_corpus_ids(), measure = "lr") %>%
-      mutate(effect_size = effect_size(n_target, n_reference)) %>%
-      filter(p < 0.05) %>%
-      arrange(desc(effect_size))
-    }, error = function(e) {
-      safeError(stop("The reference corpus must contain some documents not in the target corpus"))
-    })
+    
+    withProgress({
+      textstat_keyness(combined_dfm(), target = filtered_corpus_ids(), measure = "lr") %>%
+        mutate(effect_size = effect_size(n_target, n_reference)) %>%
+        filter(p < 0.05) %>%
+        arrange(desc(effect_size))
+    }, message = "Calculating keyness...")
+    
   })
   
   output$keyness_table <- renderDataTable({
+    if (length(setdiff(rownames(combined_dfm()), filtered_corpus_ids())) > 0) {
       keyness_stats()
+    } else {
+      stop(safeError("The reference corpus must contain some documents not in the target corpus"))
+    }
   }, escape = FALSE)
 }
