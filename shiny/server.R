@@ -4,6 +4,9 @@ library(glue)
 library(lubridate)
 library(tidyverse)
 library(tidytext)
+library(htmlwidgets)
+library(sparkline)
+library(formattable)
 
 function(input, output, session) {
   
@@ -255,7 +258,7 @@ function(input, output, session) {
   combined_metadata <- reactive({
     core_table %>% 
       filter(url %in% rownames(combined_dfm())) %>% 
-      mutate(approx_date = round_date(date_published, "halfyear"))
+      mutate(approx_date = round_date(date_published, "year"))
   })
   
   split_corpus <- reactive({
@@ -267,24 +270,39 @@ function(input, output, session) {
     withProgress({
       split_corpus() %>% 
         imap_dfr(function(sc, datestring) {
+          incProgress(1/length(split_corpus))
           combined_split <- combined_dfm()[sc,]
           target_split <- intersect(filtered_corpus_ids(), sc)
           
           textstat_keyness(combined_split, target = target_split, measure = "lr") %>%
             mutate(effect_size = effect_size(n_target, n_reference)) %>%
-            filter(p < 0.05) %>%
-            arrange(desc(effect_size))
+            filter(p < 0.05)
         }, .id = "date") %>% 
-        mutate(date = ymd(date))
-    }, message = "Calculating keyness...")
+        mutate(date = ymd(date)) %>% 
+        group_by(feature) %>% 
+        summarize(
+          med_G2 = median(G2, na.rm = TRUE),
+          n_target = sum(n_target),
+          n_reference = sum(n_reference),
+          med_effect = median(effect_size, na.rm = TRUE),
+          effect_timeline = spk_chr(effect_size)
+        ) %>% 
+        arrange(desc(med_effect))
+    }, message = "Calculating keyness...", value = 0)
     
   })
   
-  output$keyness_table <- renderDataTable({
+  
+  output$keyness_table <- DT::renderDataTable({
     if (length(setdiff(rownames(combined_dfm()), filtered_corpus_ids())) > 0) {
-      keyness_stats()
+      datatable(keyness_stats(), escape = FALSE, options = list(
+        fnDrawCallback = htmlwidgets::JS(
+          'function(){
+  HTMLWidgets.staticRender();
+}'
+        ))) %>% spk_add_deps()
     } else {
       stop(safeError("The reference corpus must contain some documents not in the target corpus. Adjust filters on the sidebar or in the reference corpus definition to change the subset of documents you are comparing."))
     }
-  }, escape = FALSE)
+  })
 }

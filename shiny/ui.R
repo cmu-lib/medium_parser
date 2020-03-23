@@ -1,4 +1,5 @@
 library(shinydashboard)
+library(sparkline)
 
 # Define UI for application that draws a histogram
 dash_header <- dashboardHeader(
@@ -21,7 +22,7 @@ corpus_tf_idf_tab <- tabItem(
   h2("TF-IDF of the corpus documents"),
   p("This view shows all the documents in the corpus, and shows the top 10 tokens for each document according to TF-IDF (terms that appear relatively frequently in that individual document, but rarely across the larger corpus, suggesting that they are terms distinctive to that document.)"),
   box(
-    dataTableOutput("document_metadata"),
+    htmlOutput("document_metadata"),
       title = "Document TF-IDF",
       width = 12)
 )
