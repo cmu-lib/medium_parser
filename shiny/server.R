@@ -68,7 +68,7 @@ function(input, output, session) {
   })
   
   token_choices <- reactive({
-    sort(colnames(base_dfm()))
+    sort(colnames(original_dfm()))
   })
   
   # Update token selectize menus based on selected corpora tokens
@@ -229,7 +229,7 @@ function(input, output, session) {
     if (!is.null(input$keyness_exclude)) {
       reduced_dfm <- dfm_match(reference_base_dfm(), input$keyness_exclude)
       filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) > 0]
-      return(setdiff(inclusive_filtered_corpus(), filtered_corpus))
+      return(setdiff(inclusive_reference_corpus(), filtered_corpus))
     }
     inclusive_reference_corpus()
   })
@@ -239,7 +239,6 @@ function(input, output, session) {
   })
   
   reference_dfm <- reactive({
-    print(setdiff(keyness_reference_ids(), rownames(reference_base_dfm())))
     reference_base_dfm()[keyness_reference_ids(),]
   })
   
@@ -254,7 +253,6 @@ function(input, output, session) {
   })
   
   keyness_stats <- reactive({
-    
     withProgress({
       textstat_keyness(combined_dfm(), target = filtered_corpus_ids(), measure = "lr") %>%
         mutate(effect_size = effect_size(n_target, n_reference)) %>%
