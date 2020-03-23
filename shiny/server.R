@@ -252,12 +252,30 @@ function(input, output, session) {
       dfm_remove(c(input$keyness_include, input$keyness_exclude, input$reference_corpora, input$available_corpora))
   })
   
+  combined_metadata <- reactive({
+    core_table %>% 
+      filter(url %in% rownames(combined_dfm())) %>% 
+      mutate(approx_date = round_date(date_published, "halfyear"))
+  })
+  
+  split_corpus <- reactive({
+    rownames(combined_dfm()) %>% 
+      split(combined_metadata()$approx_date)
+  })
+  
   keyness_stats <- reactive({
     withProgress({
-      textstat_keyness(combined_dfm(), target = filtered_corpus_ids(), measure = "lr") %>%
-        mutate(effect_size = effect_size(n_target, n_reference)) %>%
-        filter(p < 0.05) %>%
-        arrange(desc(effect_size))
+      split_corpus() %>% 
+        imap_dfr(function(sc, datestring) {
+          combined_split <- combined_dfm()[sc,]
+          target_split <- intersect(filtered_corpus_ids(), sc)
+          
+          textstat_keyness(combined_split, target = target_split, measure = "lr") %>%
+            mutate(effect_size = effect_size(n_target, n_reference)) %>%
+            filter(p < 0.05) %>%
+            arrange(desc(effect_size))
+        }, .id = "date") %>% 
+        mutate(date = ymd(date))
     }, message = "Calculating keyness...")
     
   })
