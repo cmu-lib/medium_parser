@@ -239,7 +239,12 @@ function(input, output, session) {
   })
   
   reference_dfm <- reactive({
+    print(setdiff(keyness_reference_ids(), rownames(reference_base_dfm())))
     reference_base_dfm()[keyness_reference_ids(),]
+  })
+  
+  output$reference_corpus_size <- renderText({
+    format(nrow(reference_dfm()), big.mark = ",")
   })
   
   combined_dfm <- reactive({
@@ -263,7 +268,7 @@ function(input, output, session) {
     if (length(setdiff(rownames(combined_dfm()), filtered_corpus_ids())) > 0) {
       keyness_stats()
     } else {
-      stop(safeError("The reference corpus must contain some documents not in the target corpus"))
+      stop(safeError("The reference corpus must contain some documents not in the target corpus. Adjust filters on the sidebar or in the reference corpus definition to change the subset of documents you are comparing."))
     }
   }, escape = FALSE)
 }

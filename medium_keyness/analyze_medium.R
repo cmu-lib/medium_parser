@@ -32,13 +32,14 @@ medium_plan <- drake_plan(
     corpus(docid_field = "url", text_field = "text"),
   medium_tokens = medium_corpus %>% 
     tokens(what = "word", remove_symbols = TRUE, remove_punct = TRUE, remove_numbers = TRUE, split_hyphens = FALSE) %>% 
-    tokens_compound(pattern = phrase(c("artificial intelligence", "big data", "machine learning"))),
+    tokens_compound(pattern = phrase(c("artificial intelligence", "big data", "machine learning"))) %>% 
+    tokens_replace(pattern = "ethical", replacement = "ethics"),
   medium_dfm = dfm(medium_tokens),
   regulation_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"regulation"])],
   big_data_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"big_data"])],
   governance_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"governance"])],
   ai_docs = rownames(medium_dfm)[(as.logical(medium_dfm[,"artificial_intelligence"]) | as.logical(medium_dfm[,"a.i"]) | as.logical(medium_dfm[,"ai"]))],
-  ethics_docs = rownames(medium_dfm)[(as.logical(medium_dfm[,"ethics"]) | as.logical(medium_dfm[,"ethical"]))],
+  ethics_docs = rownames(medium_dfm)[(as.logical(medium_dfm[,"ethics"]))],
   ml_docs = rownames(medium_dfm)[as.logical(medium_dfm[,"machine_learning"])],
   algorithm_docs = rownames(medium_dfm)[(as.logical(medium_dfm[,"algorithm"]) | as.logical(medium_dfm[,"algorithms"]))],
   ai_ethics_docs = intersect(ai_docs, ethics_docs),

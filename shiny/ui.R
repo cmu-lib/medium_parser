@@ -8,7 +8,6 @@ dash_header <- dashboardHeader(
 medium_query_choices <- c(
   "artifical intelligence" = "artificial_intelligence", 
   "ethics" = "ethics", 
-  "ethical" = "ethical", 
   "machine learning" = "machine_learning", 
   "algorithm" = "algorithm", 
   "goveranance" = "governance", 
@@ -71,7 +70,8 @@ keyness_tab <- tabItem(
     title = "Define reference corpus",
     selectizeInput("reference_corpora", choices = medium_query_choices, selected = "artificial_intelligence", multiple = TRUE, label = "Select base comparison corpus"),
     selectizeInput("keyness_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include terms"),
-    selectizeInput("keyness_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must exclude terms")
+    selectizeInput("keyness_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must exclude terms"),
+    p("Number of docs: ", textOutput("reference_corpus_size", inline = TRUE))
   ),
   box(
     dataTableOutput("keyness_table"),
