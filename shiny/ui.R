@@ -49,7 +49,7 @@ kwic_tab <- tabItem(
   list(
     box(
       selectizeInput("kwic_tokens", choices = NULL, selected = NULL, multiple = FALSE, label = "Pick token to see in context"),
-      dataTableOutput("kwic_table"),
+      DT::dataTableOutput("kwic_table"),
       width = 12
     )
   )

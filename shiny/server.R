@@ -242,7 +242,7 @@ function(input, output, session) {
     }, message = "Finding keyword in context")
   })
   
-  output$kwic_table <- renderDataTable({
+  output$kwic_table <- DT::renderDataTable({
     kwic_table()
   }, escape = FALSE)
   
