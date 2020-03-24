@@ -258,7 +258,7 @@ function(input, output, session) {
   combined_metadata <- reactive({
     core_table %>% 
       filter(url %in% rownames(combined_dfm())) %>% 
-      mutate(approx_date = round_date(date_published, "year"))
+      mutate(approx_date = round_date(date_published, "halfyear"))
   })
   
   split_corpus <- reactive({
@@ -276,17 +276,20 @@ function(input, output, session) {
           target_split <- intersect(filtered_corpus_ids(), sc)
           
           textstat_keyness(combined_split, target = target_split, measure = "lr") %>%
-            mutate(effect_size = effect_size(n_target, n_reference)) %>%
+            mutate(es = effect_size(n_target, n_reference)) %>%
             filter(p < 0.05)
         }, .id = "date") %>% 
         mutate(date = ymd(date)) %>% 
+        # Expand to include all combos, even when feature had null effect size. This is critical for calculating the sparkline
+        tidyr::complete(feature, date) %>%
+        mutate(es = dplyr::coalesce(es, 0)) %>% 
         group_by(feature) %>% 
         summarize(
           med_G2 = median(G2, na.rm = TRUE),
-          n_target = sum(n_target),
-          n_reference = sum(n_reference),
-          med_effect = median(effect_size, na.rm = TRUE),
-          effect_timeline = spk_chr(effect_size)
+          n_target = sum(n_target, na.rm = TRUE),
+          n_reference = sum(n_reference, na.rm = TRUE),
+          med_effect = median(es, na.rm = TRUE),
+          effect_timeline = spk_chr(es, type = "bar")
         ) %>% 
         arrange(desc(med_effect))
     }, message = "Calculating keyness...", value = 0)
