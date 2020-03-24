@@ -11,7 +11,43 @@ library(DT)
 function(input, output, session) {
   
   original_dfm <- reactive({
-    stopped_dfm
+    req(input$stem_choices)
+    if (input$stem_choices == "original") {
+      stopped_dfm
+    } else if (input$stem_choices == "stemmed") {
+      stemmed_dfm
+    }
+  })
+  
+  observe({
+    corpus_type <- input$stem_choices
+    if (corpus_type == "original") {
+      corpus_selectors <- c(
+        "artifical intelligence" = "artificial_intelligence", 
+        "ethics" = "ethics", 
+        "machine learning" = "machine_learning", 
+        "algorithm" = "algorithm", 
+        "goveranance" = "governance", 
+        "regulation" = "regulation", 
+        "big data" = "big_data")
+    } else if (corpus_type == "stemmed") {
+      corpus_selectors <- c(
+        "artifical intelligence" = "artifici_intellig", 
+        "ethic-" = "ethic", 
+        "machine learning" = "machine_learn", 
+        "algorithm" = "algorithm", 
+        "govern-" = "govern", 
+        "regulation" = "regul", 
+        "big data" = "big_data")
+    }
+    updateSelectizeInput(session, "available_corpora",
+                         choices = corpus_selectors,
+                         selected = "algorithm",
+                         server = TRUE)
+    updateSelectizeInput(session, "reference_corpora",
+                         choices = corpus_selectors,
+                         selected = "algorithm",
+                         server = TRUE)
   })
   
   base_dfm <- reactive({
@@ -184,7 +220,7 @@ function(input, output, session) {
   kwic_table <- reactive({
     withProgress({
       req(input$kwic_tokens)
-      kwic_pattern <- input$kwic_tokens
+      kwic_pattern <- str_c(input$kwic_tokens, "*", sep = "")
       
       kwic(filtered_corpus(), kwic_pattern, window = 15) %>% 
         select(docname, pre, keyword, post) %>% 

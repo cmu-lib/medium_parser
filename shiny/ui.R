@@ -6,16 +6,9 @@ dash_header <- dashboardHeader(
   title = "Medium Corpus"
 )
 
-medium_query_choices <- c(
-  "artifical intelligence" = "artificial_intelligence", 
-  "ethics" = "ethics", 
-  "machine learning" = "machine_learning", 
-  "algorithm" = "algorithm", 
-  "goveranance" = "governance", 
-  "regulation" = "regulation", 
-  "big data" = "big_data")
+stem_picker <- radioButtons("stem_choices", choices = c("original", "stemmed"), selected = "original", label = "Use original tokens, or stemmed tokens")
 
-core_corpus_selector <- selectizeInput("available_corpora", choices = medium_query_choices, selected = medium_query_choices, multiple = TRUE, label = "Original Medium.com search terms")
+core_corpus_selector <- selectizeInput("available_corpora", choices = NULL, selected = NULL, multiple = TRUE, label = "Original Medium.com search terms")
 
 corpus_tf_idf_tab <- tabItem(
   tabName = "corpus_tf_idf",
@@ -69,7 +62,7 @@ keyness_tab <- tabItem(
   box(
     width = 6,
     title = "Define reference corpus",
-    selectizeInput("reference_corpora", choices = medium_query_choices, selected = "artificial_intelligence", multiple = TRUE, label = "Select base comparison corpus"),
+    selectizeInput("reference_corpora", choices = NULL, selected = NULL, multiple = TRUE, label = "Select base comparison corpus"),
     selectizeInput("keyness_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include terms"),
     selectizeInput("keyness_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must exclude terms"),
     p("Number of docs: ", textOutput("reference_corpus_size", inline = TRUE)),
@@ -91,6 +84,7 @@ corpus_data <- div(
 
 dash_sidebar <- dashboardSidebar(
   h3("Define target corpus"),
+  stem_picker,
   core_corpus_selector,
   corpus_inclusive,
   corpus_exclusive,
