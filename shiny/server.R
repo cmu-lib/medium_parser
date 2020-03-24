@@ -40,6 +40,17 @@ function(input, output, session) {
         "regulation" = "regul", 
         "big data" = "big_data")
     }
+    
+    # add counts to corpus selectors
+    reduced_dfm <- original_dfm() %>% 
+      dfm_match(corpus_selectors)
+    
+    selector_binary <- reduced_dfm > 0
+    
+    selector_counts <- colSums(selector_binary)
+    
+    names(corpus_selectors) <- str_c(names(corpus_selectors), " (", selector_counts, ")", sep = "")
+    
     updateSelectizeInput(session, "available_corpora",
                          choices = corpus_selectors,
                          selected = "algorithm",
