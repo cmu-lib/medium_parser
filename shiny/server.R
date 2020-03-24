@@ -369,7 +369,7 @@ function(input, output, session) {
 }'
           ))) %>% spk_add_deps()
       } else {
-        stop(safeError("The reference corpus must contain some documents not in the target corpus. Adjust filters on the sidebar or in the reference corpus definition to change the subset of documents you are comparing."))
+        stop(safeError("The reference corpus must contain some documents not in the target corpus. Right now, one the target corpus completely overlaps the reference corpus. Adjust filters on the sidebar or in the reference corpus definition to change the subset of documents you are comparing."))
       }
     })
   })
