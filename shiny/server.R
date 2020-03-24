@@ -323,9 +323,19 @@ function(input, output, session) {
           combined_split <- combined_dfm()[sc,]
           target_split <- intersect(filtered_corpus_ids(), sc)
           
+          tryCatch({
           textstat_keyness(combined_split, target = target_split, measure = "lr") %>%
             mutate(es = effect_size(n_target, n_reference)) %>%
             filter(p < 0.05)
+          }, error = function(e) {
+            # If an invalid comparison comes up for a given time period, produce an empty table
+            tibble(feature = colnames(combined_split), 
+                   G2 = NA_real_, 
+                   p = NA_real_, 
+                   n_target = NA_integer_, 
+                   n_reference = NA_integer_, 
+                   es = NA_real_)
+          })
         }, .id = "date") %>% 
         mutate(date = ymd(date)) %>% 
         # Expand to include all combos, even when feature had null effect size. This is critical for calculating the sparkline

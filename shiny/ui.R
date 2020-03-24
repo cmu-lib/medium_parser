@@ -69,7 +69,7 @@ keyness_tab <- tabItem(
     actionButton("keynessButton", "Compute")
   ),
   box(
-    dataTableOutput("keyness_table"),
+    DT::dataTableOutput("keyness_table"),
     width = 12
   )
 )
