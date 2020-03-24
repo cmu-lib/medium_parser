@@ -189,6 +189,7 @@ function(input, output, session) {
   })
   
   single_termsovertime <- reactive({
+    req(input$wordchart_tokens)
     filtered_dfm() %>% 
       dfm_match(input$wordchart_tokens) %>% 
       tidy() %>% 
