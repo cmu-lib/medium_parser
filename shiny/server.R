@@ -164,7 +164,7 @@ function(input, output, session) {
     }, message = "Calculating TF-IDF")
   })
   
-  output$document_metadata <- renderDataTable({
+  output$document_metadata <- DT::renderDataTable({
     corpus_tfidf() %>%
       inner_join(corpus_metadata(), by = c("document" = "url")) %>%
       mutate(
