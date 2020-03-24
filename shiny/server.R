@@ -6,7 +6,7 @@ library(tidyverse)
 library(tidytext)
 library(htmlwidgets)
 library(sparkline)
-library(formattable)
+library(DT)
 
 function(input, output, session) {
   
@@ -267,6 +267,7 @@ function(input, output, session) {
   })
   
   keyness_stats <- reactive({
+    
     withProgress({
       split_corpus() %>% 
         imap_dfr(function(sc, datestring) {
@@ -290,19 +291,25 @@ function(input, output, session) {
         arrange(desc(med_effect))
     }, message = "Calculating keyness...", value = 0)
     
+    
   })
   
   
   output$keyness_table <- DT::renderDataTable({
-    if (length(setdiff(rownames(combined_dfm()), filtered_corpus_ids())) > 0) {
-      datatable(keyness_stats(), escape = FALSE, options = list(
-        fnDrawCallback = htmlwidgets::JS(
-          'function(){
+    if (input$keynessButton == 0)
+      return()
+    
+    isolate({
+      if (length(setdiff(rownames(combined_dfm()), filtered_corpus_ids())) > 0) {
+        datatable(keyness_stats(), escape = FALSE, options = list(
+          fnDrawCallback = htmlwidgets::JS(
+            'function(){
   HTMLWidgets.staticRender();
 }'
-        ))) %>% spk_add_deps()
-    } else {
-      stop(safeError("The reference corpus must contain some documents not in the target corpus. Adjust filters on the sidebar or in the reference corpus definition to change the subset of documents you are comparing."))
-    }
+          ))) %>% spk_add_deps()
+      } else {
+        stop(safeError("The reference corpus must contain some documents not in the target corpus. Adjust filters on the sidebar or in the reference corpus definition to change the subset of documents you are comparing."))
+      }
+    })
   })
 }

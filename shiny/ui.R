@@ -72,7 +72,8 @@ keyness_tab <- tabItem(
     selectizeInput("reference_corpora", choices = medium_query_choices, selected = "artificial_intelligence", multiple = TRUE, label = "Select base comparison corpus"),
     selectizeInput("keyness_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include terms"),
     selectizeInput("keyness_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must exclude terms"),
-    p("Number of docs: ", textOutput("reference_corpus_size", inline = TRUE))
+    p("Number of docs: ", textOutput("reference_corpus_size", inline = TRUE)),
+    actionButton("keynessButton", "Compute")
   ),
   box(
     dataTableOutput("keyness_table"),
