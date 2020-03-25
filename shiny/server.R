@@ -32,13 +32,13 @@ function(input, output, session) {
         "big data" = "big_data")
     } else if (corpus_type == "stemmed") {
       corpus_selectors <- c(
-        "artifical intelligence" = "artifici_intellig", 
-        "ethic-" = "ethic", 
-        "machine learning" = "machine_learn", 
+        "artifici_intellig" = "artifici_intellig", 
+        "ethic" = "ethic", 
+        "machin_learn" = "machin_learn", 
         "algorithm" = "algorithm", 
-        "govern-" = "govern", 
-        "regulation" = "regul", 
-        "big data" = "big_data")
+        "govern" = "govern", 
+        "regul" = "regul", 
+        "big_data" = "big_data")
     }
     
     # add counts to corpus selectors
