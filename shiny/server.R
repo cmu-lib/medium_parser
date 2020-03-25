@@ -223,7 +223,7 @@ function(input, output, session) {
       select(author_name, title, date_published, publisher_name)
   })
   
-  output$termsovertime_metadata <- renderDataTable({
+  output$termsovertime_metadata <- DT::renderDataTable({
     termsovertime_metadata()
   }, escape = FALSE)
   

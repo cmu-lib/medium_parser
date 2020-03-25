@@ -35,7 +35,7 @@ termsovertime_tab <- tabItem(
       height = 650
     ),
     box(
-      dataTableOutput("termsovertime_metadata"),
+      DT::dataTableOutput("termsovertime_metadata"),
       title = "Documents with these tokens",
       width = 12
     )
