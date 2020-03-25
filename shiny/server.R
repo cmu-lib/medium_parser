@@ -318,7 +318,7 @@ function(input, output, session) {
     textstat_keyness(combined_dfm(), target = filtered_corpus_ids(), measure = "lr") %>% 
       mutate(es = effect_size(n_target, n_reference)) %>% 
       filter(p <= 0.5) %>% 
-      arrange(desc(es))
+      arrange(desc(G2))
   })
   
   keyness_stats_time <- reactive({
