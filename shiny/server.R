@@ -314,8 +314,14 @@ function(input, output, session) {
       split(combined_metadata()$approx_date)
   })
   
-  keyness_stats <- reactive({
-    
+  keyness_stats_central <- reactive({
+    textstat_keyness(combined_dfm(), target = filtered_corpus_ids(), measure = "lr") %>% 
+      mutate(es = effect_size(n_target, n_reference)) %>% 
+      filter(p <= 0.5) %>% 
+      arrange(desc(es))
+  })
+  
+  keyness_stats_time <- reactive({
     withProgress({
       split_corpus() %>% 
         imap_dfr(function(sc, datestring) {
@@ -324,9 +330,8 @@ function(input, output, session) {
           target_split <- intersect(filtered_corpus_ids(), sc)
           
           tryCatch({
-          textstat_keyness(combined_split, target = target_split, measure = "lr") %>%
-            mutate(es = effect_size(n_target, n_reference)) %>%
-            filter(p < 0.05)
+            textstat_keyness(combined_split, target = target_split, measure = "lr") %>%
+              mutate(es = effect_size(n_target, n_reference))
           }, error = function(e) {
             # If an invalid comparison comes up for a given time period, produce an empty table
             tibble(feature = colnames(combined_split), 
@@ -342,17 +347,15 @@ function(input, output, session) {
         tidyr::complete(feature, date) %>%
         mutate(es = dplyr::coalesce(es, 0)) %>% 
         group_by(feature) %>% 
+        arrange(date) %>% 
         summarize(
-          med_G2 = median(G2, na.rm = TRUE),
-          n_target = sum(n_target, na.rm = TRUE),
-          n_reference = sum(n_reference, na.rm = TRUE),
-          med_effect = median(es, na.rm = TRUE),
           effect_timeline = spk_chr(es, type = "bar")
-        ) %>% 
-        arrange(desc(med_effect))
+        )
     }, message = "Calculating keyness...", value = 0)
-    
-    
+  })
+  
+  keyness_stats <- reactive({
+    left_join(keyness_stats_central(), keyness_stats_time(), by = "feature")
   })
   
   
