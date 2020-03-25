@@ -37,7 +37,7 @@ medium_plan <- drake_plan(
   stopped_dfm = medium_dfm %>% 
     dfm_remove(stopwords("en")) %>% 
     dfm_remove(stopwords("es")) %>% 
-    dfm_trim(min_docfreq = 0.01, max_docfreq = 0.9, docfreq_type = "prop"),
+    dfm_trim(min_termfreq = 2, termfreq_type = "count"),
   stemmed_dfm = stopped_dfm %>% 
     dfm_wordstem(language = "en"),
   shiny_data = save(stopped_dfm, stemmed_dfm, medium_corpus, core_table, file = file_out("shiny/data.rda"))
