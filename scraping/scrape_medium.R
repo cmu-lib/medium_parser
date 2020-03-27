@@ -27,3 +27,4 @@ walk(urls_to_fetch, possibly(function(url) {
 }, otherwise = NULL))
 
 saveRDS(dbReadTable(db, "article"), file = "scraping/medium_html.rds")
+write_lines(dbGetQuery(db, "SELECT url FROM article ORDER BY url")$url, path = "scraping/links.txt")
