@@ -345,11 +345,14 @@ function(input, output, session) {
         mutate(date = ymd(date)) %>% 
         # Expand to include all combos, even when feature had null effect size. This is critical for calculating the sparkline
         tidyr::complete(feature, date) %>%
-        mutate(es = dplyr::coalesce(es, 0)) %>% 
+        mutate(
+          es = dplyr::coalesce(es, 0),
+          G2 = dplyr::coalesce(G2, 0)) %>% 
         group_by(feature) %>% 
         arrange(date) %>% 
         summarize(
-          effect_timeline = spk_chr(es, type = "bar")
+          effect_timeline = spk_chr(es, type = "bar"),
+          g2_timeline = spk_chr(G2, type = "bar")
         )
     }, message = "Calculating keyness...", value = 0)
   })
