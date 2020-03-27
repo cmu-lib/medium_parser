@@ -69,6 +69,7 @@ keyness_tab <- tabItem(
     actionButton("keynessButton", "Compute")
   ),
   box(
+    p("The mini graphs at left (sparklines) show the G^2 and effect size measures between 2015 and 2020 split into 6-month periods."),
     DT::dataTableOutput("keyness_table"),
     width = 12
   )
