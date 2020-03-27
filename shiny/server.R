@@ -29,7 +29,12 @@ function(input, output, session) {
         "algorithm" = "algorithm", 
         "goveranance" = "governance", 
         "regulation" = "regulation", 
-        "big data" = "big_data")
+        "big data" = "big_data",
+        "design" = "design",
+        "ux" = "ux",
+        "user experience" = "user_experience",
+        "ixd" = "ixd",
+        "ixda" = "ixda")
     } else if (corpus_type == "stemmed") {
       corpus_selectors <- c(
         "artifici_intellig" = "artifici_intellig", 
@@ -38,7 +43,12 @@ function(input, output, session) {
         "algorithm" = "algorithm", 
         "govern" = "govern", 
         "regul" = "regul", 
-        "big_data" = "big_data")
+        "big_data" = "big_data",
+        "design" = "design",
+        "ux" = "ux",
+        "user_experi" = "user_experi",
+        "ixd" = "ixd",
+        "ixda" = "ixda")
     }
     
     # add counts to corpus selectors

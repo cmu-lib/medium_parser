@@ -7,14 +7,6 @@ library(rmarkdown)
 
 source("scraping/parse_medium.R")
 
-effect_size <- function (n_target, n_reference) {
-  total_a <- sum(n_target)
-  total_b <- sum(n_reference)
-  percent_a <- ifelse(n_target == 0, 0.5 / total_a, n_target/total_a)
-  percent_b <- ifelse(n_reference == 0, 0.5 / total_b, n_reference/total_b)
-  log2(percent_a / percent_b)
-}
-
 exclude_articles <- c(
   # This "article" is an aggregate of a lot of medium posts so skews us like crazy
   "https://medium.com/hackernoon/top-150-medium-articles-related-with-big-data-data-science-and-data-visualization-803773728ff7"
@@ -32,7 +24,7 @@ medium_plan <- drake_plan(
     corpus(docid_field = "url", text_field = "text"),
   medium_tokens = medium_corpus %>% 
     tokens(what = "word", remove_symbols = TRUE, remove_punct = TRUE, remove_numbers = TRUE, split_hyphens = FALSE) %>% 
-    tokens_compound(pattern = phrase(c("artificial intelligence", "big data", "machine learning"))),
+    tokens_compound(pattern = phrase(c("artificial intelligence", "big data", "machine learning", "user experience"))),
   medium_dfm = dfm(medium_tokens),
   stopped_dfm = medium_dfm %>% 
     dfm_remove(stopwords("en")) %>% 
