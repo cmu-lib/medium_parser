@@ -63,7 +63,8 @@ keyness_tab <- tabItem(
     width = 6,
     title = "Define reference corpus",
     selectizeInput("reference_corpora", choices = NULL, selected = NULL, multiple = TRUE, label = "Select base comparison corpus"),
-    selectizeInput("keyness_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include terms"),
+    selectizeInput("keyness_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include ALL terms"),
+    selectizeInput("keyness_or", choices = NULL, selected = "", multiple = TRUE, label = "Must include AT LEAST ONE term"),
     selectizeInput("keyness_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must exclude terms"),
     p("Number of docs: ", textOutput("reference_corpus_size", inline = TRUE)),
     actionButton("keynessButton", "Compute")
@@ -75,7 +76,9 @@ keyness_tab <- tabItem(
   )
 )
 
-corpus_inclusive <- selectizeInput("corpus_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include terms")
+corpus_inclusive <- selectizeInput("corpus_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include ALL terms")
+
+corpus_or <- selectizeInput("corpus_or", choices = NULL, selected = "", multiple = TRUE, label = "Must include AT LEAST ONE term")
 
 corpus_exclusive <- selectizeInput("corpus_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must not include terms")
 
@@ -88,6 +91,7 @@ dash_sidebar <- dashboardSidebar(
   stem_picker,
   core_corpus_selector,
   corpus_inclusive,
+  corpus_or,
   corpus_exclusive,
   corpus_data,
   sidebarMenu(

@@ -96,14 +96,23 @@ function(input, output, session) {
     rownames(base_dfm())
   })
   
+  or_filtered_corpus <- reactive({
+    if (!is.null(input$corpus_or)) {
+      reduced_dfm <- dfm_match(base_dfm(), input$corpus_or)
+      filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) > 0]
+      return(intersect(inclusive_filtered_corpus(), filtered_corpus))
+    }
+    inclusive_filtered_corpus()
+  })
+  
   # Document IDs that must be excluded
   exclusive_filtered_corpus <- reactive({
     if (!is.null(input$corpus_exclude)) {
       reduced_dfm <- dfm_match(base_dfm(), input$corpus_exclude)
       filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) > 0]
-      return(setdiff(inclusive_filtered_corpus(), filtered_corpus))
+      return(setdiff(or_filtered_corpus(), filtered_corpus))
     }
-    inclusive_filtered_corpus()
+    or_filtered_corpus()
   })
   
   filtered_corpus_ids <- reactive({
@@ -138,6 +147,10 @@ function(input, output, session) {
                          choices = x,
                          selected = NULL,
                          server = TRUE)
+    updateSelectizeInput(session, "corpus_or",
+                         choices = x,
+                         selected = NULL,
+                         server = TRUE)
     updateSelectizeInput(session, "corpus_exclude",
                          choices = x,
                          selected = NULL,
@@ -151,6 +164,10 @@ function(input, output, session) {
                          selected = NULL,
                          server = TRUE)
     updateSelectizeInput(session, "keyness_include",
+                         choices = x,
+                         selected = NULL,
+                         server = TRUE)
+    updateSelectizeInput(session, "keyness_or",
                          choices = x,
                          selected = NULL,
                          server = TRUE)
@@ -285,14 +302,23 @@ function(input, output, session) {
     rownames(reference_base_dfm())
   })
   
+  or_reference_corpus <- reactive({
+    if (!is.null(input$keyness_or)) {
+      reduced_dfm <- dfm_match(reference_base_dfm(), input$keyness_or)
+      filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) > 0]
+      return(intersect(inclusive_reference_corpus(), filtered_corpus))
+    }
+    inclusive_reference_corpus()
+  })
+  
   # Document IDs that must be excluded
   exclusive_reference_corpus <- reactive({
     if (!is.null(input$keyness_exclude)) {
       reduced_dfm <- dfm_match(reference_base_dfm(), input$keyness_exclude)
       filtered_corpus <- rownames(reduced_dfm)[rowSums(reduced_dfm) > 0]
-      return(setdiff(inclusive_reference_corpus(), filtered_corpus))
+      return(setdiff(or_reference_corpus(), filtered_corpus))
     }
-    inclusive_reference_corpus()
+    or_reference_corpus()
   })
   
   keyness_reference_ids <- reactive({
