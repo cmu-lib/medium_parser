@@ -265,7 +265,7 @@ function(input, output, session) {
         select(docname, pre, keyword, post) %>% 
         group_by(docname) %>% 
         summarize(phrases = str_c(pre, "<strong>", keyword, "</strong>", post, sep = " ", collapse = "<br/><br/>")) %>% 
-        mutate(docname = glue("<a href='{docname}'>{docname}</a>"))
+        mutate(docname = glue("<a href='{docname}' target='_blank' rel='noopener noreferrer'>{docname}</a>"))
     }, message = "Finding keyword in context")
   })
   
