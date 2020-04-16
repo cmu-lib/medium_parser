@@ -201,7 +201,7 @@ function(input, output, session) {
         publisher = glue("<a href='{publisher_url}' target='_blank' rel='noopener noreferrer'>{publisher_name}</a>")
       ) %>% 
       select(author_name, title, date_published, publisher, top_terms)
-  }, escape = FALSE, options = list(searching = FALSE))
+  }, escape = FALSE, options = list(searching = FALSE, pageLength = 100))
   
   # termsovertime ----
   
@@ -253,7 +253,7 @@ function(input, output, session) {
   
   output$termsovertime_metadata <- DT::renderDataTable({
     termsovertime_metadata()
-  }, escape = FALSE, options = list(searching = FALSE))
+  }, escape = FALSE, options = list(pageLength = 100, searching = FALSE))
   
   # KWIC ----
   
@@ -272,7 +272,7 @@ function(input, output, session) {
   
   output$kwic_table <- DT::renderDataTable({
     kwic_table()
-  }, escape = FALSE, options = list(searching = FALSE))
+  }, escape = FALSE, options = list(pageLength = 100, searching = FALSE))
   
   # Keyness ----
   
@@ -407,6 +407,7 @@ function(input, output, session) {
       if (length(setdiff(rownames(combined_dfm()), filtered_corpus_ids())) > 0) {
         datatable(keyness_stats(), escape = FALSE, options = list(
           searching = FALSE,
+          pageLength = 100,
           fnDrawCallback = htmlwidgets::JS(
             'function(){
   HTMLWidgets.staticRender();
