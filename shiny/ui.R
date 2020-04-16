@@ -16,8 +16,8 @@ corpus_tf_idf_tab <- tabItem(
   p("This view shows all the documents in the corpus, and shows the top 10 tokens for each document according to TF-IDF (terms that appear relatively frequently in that individual document, but rarely across the larger corpus, suggesting that they are terms distinctive to that document.)"),
   box(
     DT::dataTableOutput("document_metadata"),
-      title = "Document TF-IDF",
-      width = 12)
+    title = "Document TF-IDF",
+    width = 12)
 )
 
 termsovertime_tab <- tabItem(
@@ -59,15 +59,22 @@ keyness_tab <- tabItem(
   tabName = "keyness",
   h2("Subcorpus Keyness"),
   p("How does this selected subcorpus compare to the full Medium corpus?"),
-  box(
-    width = 6,
-    title = "Define reference corpus",
-    selectizeInput("reference_corpora", choices = NULL, selected = NULL, multiple = TRUE, label = "Select base comparison corpus"),
-    selectizeInput("keyness_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include ALL terms"),
-    selectizeInput("keyness_or", choices = NULL, selected = "", multiple = TRUE, label = "Must include AT LEAST ONE term"),
-    selectizeInput("keyness_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must exclude terms"),
-    p("Number of docs: ", textOutput("reference_corpus_size", inline = TRUE)),
-    actionButton("keynessButton", "Compute")
+  fluidRow(
+    box(
+      width = 6,
+      title = "Define reference corpus",
+      selectizeInput("reference_corpora", choices = NULL, selected = NULL, multiple = TRUE, label = "Select base comparison corpus"),
+      selectizeInput("keyness_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include ALL terms"),
+      selectizeInput("keyness_or", choices = NULL, selected = "", multiple = TRUE, label = "Must include AT LEAST ONE term"),
+      selectizeInput("keyness_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must exclude terms"),
+      p("Number of docs: ", textOutput("reference_corpus_size", inline = TRUE)),
+      actionButton("keynessButton", "Compute")
+    ),
+    box(
+      width= 6,
+      title="Current keyword selections",
+      pre(textOutput("keyword_summary"))
+    )
   ),
   box(
     p("The mini graphs at left (sparklines) show the G^2 and effect size measures between 2015 and 2020 split into 6-month periods."),

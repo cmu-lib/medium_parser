@@ -415,4 +415,22 @@ function(input, output, session) {
       }
     })
   })
+  
+  output$keyword_summary <- renderText({
+    glue("
+         Tokens: {input$stem_choices}
+         
+         Target corpus: {format(nrow(corpus_metadata()), big.mark = ',')}
+         Original medium search terms: {str_c(input$available_corpora, collapse = '; ')}
+         Includes all: {str_c(input$corpus_include, collapse = '; ')}
+         Includes any: {str_c(input$corpus_or, collapse = '; ')}
+         Excludes any: {str_c(input$corpus_exclude, collapse = '; ')}
+         
+         Reference corpus: {format(nrow(combined_dfm()), big.mark = ',')}
+         Original medium search terms: {str_c(input$reference_corpora, collapse = '; ')}
+         Includes all: {str_c(input$keyness_include, collapse = '; ')}
+         Includes any: {str_c(input$keyness_or, collapse = '; ')}
+         Excludes any: {str_c(input$keyness_exclude, collapse = '; ')}
+         ")
+  })
 }
