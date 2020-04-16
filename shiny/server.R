@@ -473,6 +473,20 @@ function(input, output, session) {
       count(author_name, author_url, sort = TRUE)
   })
   
+  format_authors_table <- function(dt) {
+    dt %>% 
+      mutate(author_name = glue("<a href='{author_url}' target='_blank' rel='noopener noreferrer'>{author_name}</a>")) %>% 
+      select(posts = n, author = author_name)
+  }
+  
+  output$target_authors_table <- DT::renderDataTable({
+    format_authors_table(target_authors()) 
+  }, escape = FALSE, options = list(pageLength = 100, searching = FALSE))
+  
+  output$reference_authors_table <- DT::renderDataTable({
+    format_authors_table(reference_authors()) 
+  }, escape = FALSE, options = list(pageLength = 100, searching = FALSE))
+  
   download_filename <- reactive({
     datetime <- str_replace_all(Sys.time(), " ", "-")
     glue("keyness_{datetime}.xlsx")

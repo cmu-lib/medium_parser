@@ -68,7 +68,8 @@ keyness_tab <- tabItem(
       selectizeInput("keyness_or", choices = NULL, selected = "", multiple = TRUE, label = "Must include AT LEAST ONE term"),
       selectizeInput("keyness_exclude", choices = NULL, selected = "", multiple = TRUE, label = "Must exclude terms"),
       p("Number of docs: ", textOutput("reference_corpus_size", inline = TRUE)),
-      actionButton("keynessButton", "Compute")
+      actionButton("keynessButton", "Compute"),
+      downloadButton("keyness_report", "Download report"),
     ),
     box(
       width= 6,
@@ -76,10 +77,11 @@ keyness_tab <- tabItem(
       pre(textOutput("keyword_summary"))
     )
   ),
-  box(
-    downloadButton("keyness_report", "Download report"),
-    DT::dataTableOutput("keyness_table"),
-    width = 12
+  tabBox(
+    width = 12,
+    tabPanel("Keyness", DT::dataTableOutput("keyness_table")),
+    tabPanel("Target Authors", DT::dataTableOutput("target_authors_table")),
+    tabPanel("Reference Authors", DT::dataTableOutput("reference_authors_table"))
   )
 )
 
