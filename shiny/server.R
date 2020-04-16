@@ -394,7 +394,7 @@ function(input, output, session) {
   })
   
   keyness_stats <- reactive({
-    left_join(keyness_stats_central(), keyness_stats_time(), by = "feature")
+    keyness_stats_central()
   })
   
   
