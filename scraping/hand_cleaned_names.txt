@@ -1,0 +1,716 @@
+Trump 156
+God 129
+Siri 115
+Elon Musk 114
+Don Norman 93
+Mark Zuckerberg 88
+Alexa 87
+Steve Jobs 81
+Nick Babich 81
+Donald Trump 73
+Obama 71
+Jakob Nielsen 49
+Andrew Ng 45
+Stephen Hawking 44
+Steve Krug 41
+Bill Gates 39
+Jared Spool 38
+Alan Cooper 37
+Mike Monteiro 34
+Watson 34
+Vitalik Buterin 29
+Jesse James Garrett 29
+Aristotle 29
+Clinton 28
+Julie Zhuo 27
+Einstein 27
+Bloomberg 26
+Fabricio Teixeira 25
+Barack Obama 25
+Jeff Bezos 25
+Yann LeCun 25
+Brad Frost 24
+Satoshi Nakamoto 24
+Dieter Rams 23
+John Maeda 23
+Ray Kurzweil 23
+Cortana 23
+Plato 22
+Alan Turing 21
+Michael Sarazen 20
+Nick Bostrom 20
+Socrates 20
+Pablo Stanley 19
+Hitler 19
+Jesus 19
+Garry Kasparov 19
+Geoffrey Hinton 19
+Nir Eyal 19
+Kafka 18
+Yoshua Bengio 18
+Bill Buxton 17
+Pedro Domingos 17
+Hillary Clinton 17
+Satoshi 17
+John McCarthy 17
+Luke Wroblewski 16
+Markus Spiske 16
+Gleb Kuznetsov 16
+Albert Einstein 16
+Peter Thiel 16
+Yuval Noah Harari 16
+Tristan Harris 16
+Harry Potter 16
+Jeff Gothelf 15
+Jake Knapp 15
+Brenda Laurel 15
+Donald Norman 15
+Cathy ONeil 15
+Henry Ford 15
+Sam Harris 14
+Jay Clayton 14
+Sundar Pichai 14
+Larry Kim 14
+Peirce 14
+Fei Fei Li 14
+Kate Crawford 14
+Ian Goodfellow 14
+Andreessen Horowitz 14
+Simon Pan 14
+Caio Braga 14
+Alok Nandi 13
+Jorge Arango 13
+Lee Sedol 13
+Rodrigo Vera 13
+Tim Brown 13
+Sam Altman 13
+Dan Brown 13
+Eric Schmidt 13
+Marko Vidrih 13
+Hinton 13
+Vlad Zamfir 13
+Guy Ligertwood 13
+Avi Eisenberger 12
+Ana Domb 12
+Nathan Curtis 12
+Isaac Asimov 12
+Andrej Karpathy 12
+Travis Kalanick 12
+Alex Castrounis 12
+Peter Morville 12
+Johnyvino 12
+Andrew Doherty 12
+@nathanbenaich 12
+Eduardo Aguayo 11
+Jack Dorsey 11
+Peter Norvig 11
+Susan Weinschenk 11
+Dan Saffer 11
+Putin 11
+Bayes 11
+Winston Churchill 11
+Mark van Rijmenam 11
+Cameron 11
+Joy Buolamwini 11
+Charles Darwin 11
+Paul Rand 11
+Antoine de Saint 10
+Brenda Sanderson 10
+Dave Malouf 10
+Christina Wodtke 10
+Josh Seiden 10
+Cassandra 10
+Cennydd Bowles 10
+Hester Peirce 10
+Dirksen 10
+Samiur Rahman 10
+Tesla 10
+Reid Hoffman 10
+Steve Blank 10
+Nancy Pelosi 10
+Steven Spielberg 10
+Gilbert Casellas 10
+Seneca 10
+Newton 10
+Dad 10
+Adam Smith 10
+Elizabeth Warren 10
+Deep Blue 10
+Bush 10
+Scott Klemmer 10
+Tim Cook 10
+Khoi Vinh 10
+Larry Page 10
+Dijkstra 10
+Virgil Pana 10
+Darwin 9
+Daniel Kahneman 9
+Abraham Lincoln 9
+Epictetus 9
+Carter 9
+Reagan 9
+Kevin Kelly 9
+Herbert Simon 9
+Mark Twain 9
+Gal Shir 9
+Molly Wright Steenson 9
+Fred Ehrsam 9
+CHRIST 9
+Ev Williams 9
+Bill Moggridge 9
+Asimov 9
+Jared M. Spool 9
+Massimo Vignelli 9
+Mario 9
+Marvin Minsky 9
+Jeremy Howard 9
+Vladimir Putin 9
+Russell 9
+Nathan Riley 9
+Eric Ries 9
+Orwell 9
+Hannah Arendt 9
+Sukant Khurana 9
+Leow Hou Teng 9
+Hillary 9
+Marty Neumeier 8
+Katja Forbes 8
+Ben Thompson 8
+Kennedy 8
+Sanders 8
+Marshall Kirkpatrick 8
+Tobias van Schneider 8
+Aarron Walter 8
+Peter Drucker 8
+Cosmin Capitanu 8
+Ayn Rand 8
+George Orwell 8
+Barthelemy Chalvet 8
+Nick Szabo 8
+Roosevelt 8
+Joe Biden 8
+Peter Singer 8
+McCarthy 8
+Kurzweil 8
+Zuck 8
+Demis Hassabis 8
+Fred Wilson 8
+AlphaGo 8
+Daniel Burka 8
+Jeffrey Zeldman 8
+Kasparov 8
+Chris Burniske 8
+Markov 8
+Mia Dand 8
+Xi Jinping 8
+Matt Turck 8
+Divan Raj 8
+Max Tegmark 8
+Dan Ariely 8
+Chris Dixon 8
+Stephanie Engle 8
+Gary Marcus 8
+Nash 7
+Christina Xu 7
+Edward Tufte 7
+Kate Rutter 7
+Gary Hustwit 7
+Minh Pham 7
+Gary Vaynerchuk 7
+Kim Goodwin 7
+Meghan Han 7
+Pasquale DSilva 7
+Isil Uzum 7
+Courtney M. Sawyer 7
+Donald J. Trump 7
+Jeremy Bentham 7
+Ira Glass 7
+Liz Jackson 7
+Picasso 7
+Aurélien Salomon 7
+Franklin D. Roosevelt 7
+Gabrielle Martin 7
+Cuomo 7
+Simon Sinek 7
+Jon Kolko 7
+J. D. Lyda 7
+Seth Godin 7
+Richard Socher 7
+Bernie Sanders 7
+Marc Andreessen 7
+Tim Ferriss 7
+Margaret Gould Stewart 7
+Ankit Rathi 7
+William Gibson 7
+Giorgia Lupi 7
+Andrew Wilshere 7
+Shakespeare 7
+Descartes 7
+Brian Chesky 7
+Tim Wu 7
+Jaron Lanier 7
+Fogg 7
+Donald A. Norman 7
+Victor Papanek 7
+Mitt Romney 7
+Adam Mosseri 7
+Maeda 7
+Walt Disney 7
+Abby Covert 7
+Freud 7
+Satya Nadella 7
+Ben Shneiderman 7
+Dana Chisnell 7
+Arthur C. Clarke 7
+Irina Raicu 7
+Marx 7
+Paul Boag 7
+Bill Clinton 7
+Warren Davidson 7
+Stuart Russell 7
+Sebastian Thrun 7
+Buddha 7
+Michel Amaral 7
+Steve Portigal 6
+Christopher Alexander 6
+Stewart Brand 6
+Ed Catmull 6
+Andy Budd 6
+John Rawls 6
+Richard Branson 6
+Simon de la Rouviere 6
+Michelangelo 6
+John Saito 6
+Irene Au 6
+Harry Harlow 6
+Joi Ito 6
+Margaret Price 6
+Anton Aheichanka 6
+Frankenstein 6
+Al Gore 6
+Charles Babbage 6
+Ada 6
+Nassim Taleb 6
+Pieter Abbeel 6
+Sagi Shrieber 6
+Samuel Hulick 6
+Charles Eames 6
+Batman 6
+Luciano Floridi 6
+Yoda 6
+Marissa Mayer 6
+Getty 6
+Andrei Gurgel 6
+Jina Anne 6
+Clarence Thomas 6
+Rachel Shonfield 6
+Newt Gingrich 6
+Gabrelle Martin 6
+Tim Berners 6
+Von Restorff 6
+Thomas Edison 6
+Peter Merholz 6
+Doug Cutting 6
+Jakub Antalik 6
+OReilly 6
+Snowden 6
+Gary Vee 6
+Mark Cuban 6
+Jesse Rifkin 6
+Tricia Wang 6
+Trent McConaghy 6
+François Chollet 6
+Sami Niemelä 6
+Bezos 6
+Nixon 6
+Saptarshi Prakash 6
+Eric Meyer 6
+Patrick Henry 6
+Justin Bieber 6
+Russ Unger 6
+Dan Larimer 6
+Robin Hanson 6
+Tony Peng 6
+Tom Emmer 6
+Stanley Kubrick 6
+Adham Dannaway 6
+Lee Ryan 6
+Graeme Fulton 6
+Marc Benioff 6
+Nelson Mandela 6
+Whitney Hess 6
+Hou Teng 6
+Erik Flowers 6
+Jeff Dean 6
+Sheryl Sandberg 6
+Ernest Hemingway 6
+Lukáš Straňák 6
+Michael Mior 6
+Carlos Rivero 6
+Lincoln 6
+Jakub Antalík 6
+Laura Klein 6
+Zhenya Rynzhuk 6
+Thomas Jefferson 6
+HAL 6
+Michael Wong 6
+John Searle 6
+Scott Hurff 6
+Leo Leung 6
+Eddie Lobanovskiy 6
+William Lidwell 6
+Justin Tran 6
+Susan Etlinger 6
+Jun Wu 6
+Braden Kowitz 5
+Mona Lisa 5
+Jane Vita 5
+Leisa Reichelt 5
+Nathan Shedroff 5
+Bill Verplank 5
+Elliot Dahl 5
+Nelson Rodríguez 5
+Tobias van Schneiderfirst 5
+Steven Mnuchin 5
+Jeremy Allaire 5
+Anna Iurchenko 5
+Chelsea Mauldin 5
+Edward Snowden 5
+Martin Belam 5
+Ash Maurya 5
+Zoltan Kollin 5
+Issara Willenskomer 5
+Jasmine Friedl 5
+Nassim Nicholas Taleb 5
+David Grace 5
+Ben White 5
+Sarah Doody 5
+Evgeny Morozov 5
+Emmanuel Macron 5
+Jared Erondu 5
+Jon Lax 5
+Hemingway 5
+Nelly Ben Hayoun 5
+Milton Glaser 5
+Turing 5
+Philip K. Dick 5
+Luis Cuende 5
+Gene Ross 5
+Marty Cagan 5
+Lucilius 5
+Scott Galloway 5
+Albert Wenger 5
+Marco Coppeto 5
+Devin Nunes 5
+Harry Brignull 5
+Brene Brown 5
+Martin Luther King 5
+Jack Ma 5
+John Maynard Keynes 5
+Alex Knight 5
+Jarvis 5
+Tony Stark 5
+Zeynep Tufekci 5
+Hoang Nguyen 5
+Malcolm Gladwell 5
+Dennis R. Mortensen 5
+Pope Francis 5
+Athena 5
+Jesse James Garret 5
+Leonardo Da Vinci 5
+Jack Clark 5
+Rod Turner 5
+LeCun 5
+Colin Garven 5
+Richard Feynman 5
+Ian Schneider 5
+Mathieu Lemay 5
+Heath Tarbert 5
+Bradley Nice 5
+Meg Robichaud 5
+Fanny Luor 5
+Andrea Drugay 5
+Cheech 5
+Audrey Liu 5
+Alessandro Floridi 5
+Buzz Usborne 5
+Kylie Timpani 5
+Anna Flávia Oliveira 5
+João Mateus Scarpa 5
+Elinor Ostrom 5
+Bach 5
+Liam Hänel 5
+Cherrie Kwok 5
+Jef Raskin 5
+Abraham Maslow 5
+Austin Kleon 5
+Ajit Pai 5
+Confucius 5
+Gabriel Valdivia 5
+Kathryn Hume 5
+Hume 5
+Mother Nature 5
+Homer 5
+Miles Davis 5
+Paola Mariselli 5
+Moses 5
+Herbert Spencer 5
+Elizabeth Churchill 5
+Jonathan Courtney 5
+Timothy Golden 5
+Eric Horvitz 5
+George Kvasnikov 5
+Bruce Tognazzini 5
+Schrödinger 5
+Robert Bringhurst 5
+Molly Steenson 5
+Sergey Brin 5
+Simone Rebaudengo 5
+John Markoff 5
+Cicero 5
+Michael Kearns 5
+Leah Buley 5
+Nathan Benaich 5
+Stephen King 5
+Noah 5
+Jeff Garzik 5
+Louis Rosenfeld 5
+Mustafa Suleyman 5
+Beyoncé 5
+Marcus Aurelius 5
+Gerd Leonhard 5
+George Soros 5
+Dalai Lama 5
+Juan Paulo Madriaza 5
+Elvis 5
+Susan Wojcicki 5
+Will Smith 5
+Paul Ford 5
+John Perry Barlow 4
+Henry Dreyfuss 4
+Jon Bell 4
+Shubham Banerjee 4
+Lou Rosenfeld 4
+Érico Fileno 4
+Adrian Zumbrunnen 4
+Jeremy Karnowski 4
+Stephen Hay 4
+Febin John James 4
+Friedrich Nietzsche 4
+Jim Kalbach 4
+Tomer Sharon 4
+Mnuchin 4
+David Marcus 4
+Ray Dalio 4
+Per Axbom 4
+Josh Clark 4
+Samuel Medvedowsky 4
+David Kelly 4
+Robert Greene 4
+Brian Armstrong 4
+Gavin Andresen 4
+Ethan Zuckerman 4
+David Attenborough 4
+Mark Carney 4
+Samantha Zhang 4
+Mike Goldin 4
+Jake Chervinsky 4
+Charles Duhigg 4
+Jacob Nielsen 4
+Jonathan Haidt 4
+Tanner Christensen 4
+Joe Toscano 4
+Joanna Ngai 4
+Daniel Eckler 4
+Jacob Lyda 4
+Francis Crick 4
+Gatsby 4
+David Kelley 4
+Zac Halbert 4
+Aaron Burden 4
+Budi Tanrim 4
+Ada Lovelace 4
+Mark Weiser 4
+Kellyanne Conway 4
+Conway 4
+Rousseau 4
+Hobbes 4
+Sun Tzu 4
+Gibbs 4
+Hilary Mason 4
+David Tintner 4
+Geoff Teehan 4
+Christophe Tauziet 4
+Tim Ferris 4
+Ahmed Riaz 4
+Tim Golden 4
+Katharine Schwab 4
+Bertrand Russell 4
+Franki Chamaki 4
+Michaël Villar 4
+Frank Chimero 4
+Mason Yarnell 4
+Cade Metz 4
+Rudy Giuliani 4
+Leonardo da Vinci 4
+David Travis 4
+Ben Horowitz 4
+Vitaly Rubtsov 4
+Trayvon Martin 4
+Santiago Bustelo 4
+Wendell Wallach 4
+Aphrodite 4
+Milton Friedman 4
+James Comey 4
+Wittgenstein 4
+Philippa Foot 4
+Isaac Newton 4
+Dann Petty 4
+Marcin Treder 4
+Maria Stoica 4
+John Battelle 4
+Casey Newton 4
+Sebastian Ruder 4
+Sebastian Raschka 4
+Bruno Le Maire 4
+Arthur Samuel 4
+Beyonce 4
+Karl Marx 4
+Hans Hofmann 4
+Christian Beck 4
+Susan Kare 4
+Michel de Montaigne 4
+Megan Erin Miller 4
+Robin Hood 4
+Paul Adams 4
+Benjamin Franklin 4
+Fabricio Dore 4
+Alasdair Hamilton 4
+Sara Wachter 4
+Warren Buffet 4
+Che 4
+Steven McKie 4
+Hawkins 4
+Steven Pinker 4
+Schrodinger 4
+Gerd Altmann 4
+Carolyn Chandler 4
+George Lucas 4
+Rihanna 4
+Jon Gold 4
+Liz Sanders 4
+David Ogilvy 4
+Ryan Holiday 4
+Austin Lee 4
+John Zimmerman 4
+Brian Quintenz 4
+Ross Ulbricht 4
+Addy Osmani 4
+Ben Huggins 4
+Kaiting Huang 4
+Jonathan Prieto 4
+John Nash 4
+Arthur Juliani 4
+Donald Rumsfeld 4
+Kathleen Breitman 4
+Daniela Busse 4
+Ari Paul 4
+Drake 4
+Assad 4
+Ashton Kutcher 4
+Ludmila Shevchenko 4
+Brendan Eich 4
+Mark Wilson 4
+Carl DeBrule 4
+Andy Warhol 4
+Max Deutsch 4
+Jack Moffett 4
+Norbert Wiener 4
+Jason Yuan 4
+Kyle Samani 4
+Alex Evans 4
+Tony Fadell 4
+Ollie Johnston 4
+Macron 4
+Nakamoto 4
+Pierre Omidyar 4
+Clayton Christensen 4
+Robert Mueller 4
+Dan Hon 4
+Michael Lewis 4
+Mahatma Gandhi 4
+Christine Lagarde 4
+Donna Spencer 4
+Kenneth E. Bentsen 4
+Steve Bannon 4
+Jerry Seinfeld 4
+Ronald Reagan 4
+Bernice McCarthy 4
+Brené Brown 4
+Estée Janssens 4
+Gary Kasparov 4
+Lady Gaga 4
+Richard Buchanan 4
+William Hinman 4
+Ronald Coase 4
+Steven Hoober 4
+Paula Scher 4
+Yuval Harari 4
+Tim Gouw 4
+Brad Burnham 4
+Rachel Carson 4
+Charbel Zeaiter 4
+Leslie Chicoine 4
+Fu Lee 4
+Kirill Shilov 4
+Oliver Reichenstein 4
+Buckminster Fuller 4
+Jacob Bustamante 4
+Richard Thaler 4
+Rodion Kutsaev 4
+Bryn Jackson 4
+Joel Spolsky 4
+Iain M. Banks 4
+David Brooks 4
+Taylor Swift 4
+Aaron Roth 4
+Rembrandt 4
+Steve Ballmer 4
+Shannon 4
+Joshua Sortino 4
+William Shakespeare 4
+Mihaly Csikszentmihalyi 4
+Eric Topol 4
+Ehsan Rahimi 4
+Frank Chen 4
+Eli Pariser 4
+Kara Swisher 4
+Paula Goldman 4
+Joshua Porter 4
+Andrea Zamora 4
+Tom Kelley 4
+Charles Kettering 4
+Erik Spiekermann 4
+Chrysippus 4
+Paul Pangaro 4
+Immanuel Kant 4
+Saul Bass 4
+Josh Puckett 4
+Bruce Sterling 4
+Marco Steinberg 4
+Jan Knikker 4
+Marie Kondo 4
+Maya Angelou 4
+Michelle Obama 4
+Kurt Koffka 4
+Kathy Pham 4
+Mitch Joel 4
+David Hume 4
+Adam Zielonko 4
+Steve Wozniak 4
+James Bond 4
+Eliezer Yudkowsky 4
+Roman Mager 4
+Raymon Sutedjo 4
+David Cope 4
+Oleg Frolov 4
