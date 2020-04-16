@@ -418,28 +418,45 @@ function(input, output, session) {
   })
   
   keyword_summary <- reactive({
-    glue("Tokens: {input$stem_choices}
-Target corpus: {format(nrow(corpus_metadata()), big.mark = ',')}
-- Original medium search terms: {str_c(input$available_corpora, collapse = '; ')}
-- Includes all: {str_c(input$corpus_include, collapse = '; ')}
-- Includes any: {str_c(input$corpus_or, collapse = '; ')}
-- Excludes any: {str_c(input$corpus_exclude, collapse = '; ')}
-Reference corpus: {format(nrow(combined_dfm()), big.mark = ',')}
-- Original medium search terms: {str_c(input$reference_corpora, collapse = '; ')}
-- Includes all: {str_c(input$keyness_include, collapse = '; ')}
-- Includes any: {str_c(input$keyness_or, collapse = '; ')}
-- Excludes any: {str_c(input$keyness_exclude, collapse = '; ')}")
-  })
-  
-  keyword_tibble <- reactive({
-    df <- tibble(txt = flatten_chr(str_split(keyword_summary(), "\\n")))
-    df <- df %>% 
-      separate(col = "txt", into = c("setting", "value"), sep = ": ")
-    return(df)
+    collapsed_available_corpora <- str_c(input$available_corpora, collapse = '; ')
+    collapsed_corpus_include <- str_c(input$corpus_include, collapse = '; ')
+    collapsed_corpus_or <- str_c(input$corpus_or, collapse = '; ')
+    collapsed_corpus_exclude <- str_c(input$corpus_exclude, collapse = '; ')
+    collapsed_reference_corpora <- str_c(input$reference_corpora, collapse = '; ')
+    collapsed_keyness_include <- str_c(input$keyness_include, collapse = '; ')
+    collapsed_keyness_or <- str_c(input$keyness_or, collapse = '; ')
+    collapsed_keyness_exclude <- str_c(input$keyness_exclude, collapse = '; ')
+    
+    tibble(
+      option = c("Tokens",
+                 "Target corpus:",
+                 "- Original medium search terms:",
+                 "- Includes all:",
+                 "- Includes any:",
+                 "- Excludes any:",
+                 "Reference corpus:",
+                 "- Original medium search terms:",
+                 "- Includes all:",
+                 "- Includes any:",
+                 "- Excludes any:"),
+      values = c(
+        input$stem_choices,
+        format(nrow(corpus_metadata()), big.mark = ','),
+        collapsed_available_corpora[1],
+        collapsed_corpus_include[1],
+        collapsed_corpus_or[1],
+        collapsed_corpus_exclude[1],
+        format(nrow(combined_dfm()), big.mark = ','),
+        collapsed_reference_corpora[1],
+        collapsed_keyness_include[1],
+        collapsed_keyness_or[1],
+        collapsed_keyness_exclude[1]
+      )
+    )
   })
   
   output$keyword_summary <- renderText({
-    keyword_summary()
+    str_c(keyword_summary()$option, keyword_summary()$values, sep = " ", collapse = "\n")
   })
   
   download_filename <- reactive({
@@ -450,7 +467,7 @@ Reference corpus: {format(nrow(combined_dfm()), big.mark = ',')}
   output$keyness_report <- downloadHandler(
     filename = download_filename(),
     content = function(file) {
-      l <- list("keyness" = keyness_stats(), "settings" = keyword_tibble())
+      l <- list("keyness" = keyness_stats(), "settings" = keyword_summary())
       write.xlsx(l, file = file)
     }
   )
