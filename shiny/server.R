@@ -462,6 +462,17 @@ function(input, output, session) {
     str_c(keyword_summary()$option, keyword_summary()$values, sep = " ", collapse = "\n")
   })
   
+  target_authors <- reactive({
+    target_authors <- corpus_metadata() %>% 
+      count(author_name, author_url, sort = TRUE)
+  })
+  
+  reference_authors <- reactive({
+    core_table %>% 
+      filter(url %in% keyness_reference_ids()) %>% 
+      count(author_name, author_url, sort = TRUE)
+  })
+  
   download_filename <- reactive({
     datetime <- str_replace_all(Sys.time(), " ", "-")
     glue("keyness_{datetime}.xlsx")
@@ -470,7 +481,10 @@ function(input, output, session) {
   output$keyness_report <- downloadHandler(
     filename = download_filename(),
     content = function(file) {
-      l <- list("keyness" = keyness_stats(), "settings" = keyword_summary())
+      l <- list("keyness" = keyness_stats(), 
+                "target_authors" = target_authors(), 
+                "reference_authors" = reference_authors(), 
+                "settings" = keyword_summary())
       write.xlsx(l, file = file)
     }
   )
