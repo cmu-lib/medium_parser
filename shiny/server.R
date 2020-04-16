@@ -193,6 +193,7 @@ function(input, output, session) {
   })
   
   output$document_metadata <- DT::renderDataTable({
+    print(corpus_metadata())
     corpus_tfidf() %>%
       inner_join(corpus_metadata(), by = c("document" = "url")) %>%
       mutate(

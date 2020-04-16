@@ -49,7 +49,10 @@ get_article_publisher <- function(article_metadata) {
     publisher_type = article_metadata[["publisher"]][["@type"]],
     publisher_name = article_metadata[["publisher"]][["name"]],
     publisher_url = article_metadata[["publisher"]][["url"]]
-  )
+  ) %>% 
+    mutate(publisher_url = if_else(str_detect(publisher_url, "^https?://medium.com"), 
+                                   publisher_url, 
+                                   paste0("https://", publisher_url)))
 }
 
 get_article_tags <- function(article_metadata) {
