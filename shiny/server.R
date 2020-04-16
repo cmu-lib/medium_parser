@@ -7,6 +7,7 @@ library(tidytext)
 library(htmlwidgets)
 library(sparkline)
 library(DT)
+library(openxlsx)
 
 function(input, output, session) {
   
@@ -416,21 +417,42 @@ function(input, output, session) {
     })
   })
   
-  output$keyword_summary <- renderText({
-    glue("
-         Tokens: {input$stem_choices}
-         
-         Target corpus: {format(nrow(corpus_metadata()), big.mark = ',')}
-         Original medium search terms: {str_c(input$available_corpora, collapse = '; ')}
-         Includes all: {str_c(input$corpus_include, collapse = '; ')}
-         Includes any: {str_c(input$corpus_or, collapse = '; ')}
-         Excludes any: {str_c(input$corpus_exclude, collapse = '; ')}
-         
-         Reference corpus: {format(nrow(combined_dfm()), big.mark = ',')}
-         Original medium search terms: {str_c(input$reference_corpora, collapse = '; ')}
-         Includes all: {str_c(input$keyness_include, collapse = '; ')}
-         Includes any: {str_c(input$keyness_or, collapse = '; ')}
-         Excludes any: {str_c(input$keyness_exclude, collapse = '; ')}
-         ")
+  keyword_summary <- reactive({
+    glue("Tokens: {input$stem_choices}
+Target corpus: {format(nrow(corpus_metadata()), big.mark = ',')}
+- Original medium search terms: {str_c(input$available_corpora, collapse = '; ')}
+- Includes all: {str_c(input$corpus_include, collapse = '; ')}
+- Includes any: {str_c(input$corpus_or, collapse = '; ')}
+- Excludes any: {str_c(input$corpus_exclude, collapse = '; ')}
+Reference corpus: {format(nrow(combined_dfm()), big.mark = ',')}
+- Original medium search terms: {str_c(input$reference_corpora, collapse = '; ')}
+- Includes all: {str_c(input$keyness_include, collapse = '; ')}
+- Includes any: {str_c(input$keyness_or, collapse = '; ')}
+- Excludes any: {str_c(input$keyness_exclude, collapse = '; ')}")
   })
+  
+  keyword_tibble <- reactive({
+    df <- tibble(txt = flatten_chr(str_split(keyword_summary(), "\\n")))
+    df <- df %>% 
+      separate(col = "txt", into = c("setting", "value"), sep = ": ")
+    print(df)
+    return(df)
+  })
+  
+  output$keyword_summary <- renderText({
+    keyword_summary()
+  })
+  
+  download_filename <- reactive({
+    datetime <- str_replace_all(Sys.time(), " ", "-")
+    glue("keyness_{datetime}.xlsx")
+  })
+  
+  output$keyness_report <- downloadHandler(
+    filename = download_filename(),
+    content = function(file) {
+      l <- list("keyness" = keyness_stats(), "settings" = keyword_tibble())
+      write.xlsx(l, file = file)
+    }
+  )
 }
