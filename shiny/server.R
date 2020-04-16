@@ -435,7 +435,6 @@ Reference corpus: {format(nrow(combined_dfm()), big.mark = ',')}
     df <- tibble(txt = flatten_chr(str_split(keyword_summary(), "\\n")))
     df <- df %>% 
       separate(col = "txt", into = c("setting", "value"), sep = ": ")
-    print(df)
     return(df)
   })
   
