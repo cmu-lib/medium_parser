@@ -236,9 +236,10 @@ function(input, output, session) {
   
   output$termsovertime_chart <- renderPlot({
     req(input$wordchart_tokens)
-    docfreq_data <- corpus_metadata() %>% 
-      ggplot(aes(x = date_published)) +
-      geom_histogram(bins = 100) +
+    docfreq_data <- timegrouped_corpus() %>% 
+      count(approx_date) %>% 
+      ggplot(aes(x = approx_date, y = n)) +
+      geom_line(size = 2) +
       theme_minimal()
     termfreq_data <- termsovertime_data() %>%
       ggplot(aes(x = approx_date, y = percent_total, color = term)) +
@@ -246,7 +247,7 @@ function(input, output, session) {
       scale_color_brewer(palette = "Dark2") +
       theme_minimal() +
       theme(legend.position = "bottom")
-    plot_grid(docfreq_data, termfreq_data, nrow = 2, rel_heights = c(1, 2), axis = "lbrt", align = "hv")
+    plot_grid(docfreq_data, termfreq_data, nrow = 2, rel_heights = c(1, 2), axis = "lbrt", align = "hv", labels = c("Entire target corpus", "Selected terms"))
   }, height = 600)
   
   termsovertime_metadata <- reactive({
