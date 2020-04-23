@@ -47,12 +47,11 @@ kwic_tab <- tabItem(
   tabName = "kwic",
   h2("Keywords in context"),
   p("Select a token to view the keywords in context for the selected corpus"),
-  list(
-    box(
-      selectizeInput("kwic_tokens", choices = NULL, selected = NULL, multiple = FALSE, label = "Pick token to see in context"),
-      DT::dataTableOutput("kwic_table"),
-      width = 12
-    )
+  selectizeInput("kwic_tokens", choices = NULL, selected = NULL, multiple = FALSE, label = "Pick token to see in context"),
+  tabBox(
+    tabPanel("Target KWIC", DT::dataTableOutput("kwic_table")),
+    tabPanel("Reference KWIC", DT::dataTableOutput("reference_kwic_table")),
+    width = 12
   )
 )
 

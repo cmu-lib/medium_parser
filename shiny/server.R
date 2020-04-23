@@ -284,21 +284,36 @@ function(input, output, session) {
   
   # KWIC ----
   
+  process_kwic <- function(corp, tokens) {
+    kwic_pattern <- str_c(tokens, "*", sep = "")
+    
+    kwic(corp, kwic_pattern, valuetype = "glob", window = 15) %>% 
+      select(docname, pre, keyword, post) %>% 
+      group_by(docname) %>% 
+      summarize(phrases = str_c(pre, "<strong>", keyword, "</strong>", post, sep = " ", collapse = "<br/><br/>")) %>% 
+      mutate(docname = glue("<a href='{docname}' target='_blank' rel='noopener noreferrer'>{docname}</a>"))
+  }
+  
   kwic_table <- reactive({
     withProgress({
       req(input$kwic_tokens)
-      kwic_pattern <- str_c(input$kwic_tokens, "*", sep = "")
-      
-      kwic(filtered_corpus(), kwic_pattern, window = 15) %>% 
-        select(docname, pre, keyword, post) %>% 
-        group_by(docname) %>% 
-        summarize(phrases = str_c(pre, "<strong>", keyword, "</strong>", post, sep = " ", collapse = "<br/><br/>")) %>% 
-        mutate(docname = glue("<a href='{docname}' target='_blank' rel='noopener noreferrer'>{docname}</a>"))
-    }, message = "Finding keyword in context")
+      process_kwic(filtered_corpus(), input$kwic_tokens)
+    }, message = "Finding target keyword in context")
+  })
+  
+  reference_kwic_table <- reactive({
+    withProgress({
+      req(input$kwic_tokens)
+      process_kwic(reference_corpus(), input$kwic_tokens)
+    }, message = "Finding reference keyword in context")
   })
   
   output$kwic_table <- DT::renderDataTable({
     kwic_table()
+  }, escape = FALSE, options = list(pageLength = 100, searching = FALSE))
+  
+  output$reference_kwic_table <- DT::renderDataTable({
+    reference_kwic_table()
   }, escape = FALSE, options = list(pageLength = 100, searching = FALSE))
   
   # Keyness ----
@@ -351,6 +366,10 @@ function(input, output, session) {
   
   keyness_reference_ids <- reactive({
     exclusive_reference_corpus()
+  })
+  
+  reference_corpus <- reactive({
+    medium_corpus[keyness_reference_ids()]
   })
   
   reference_dfm <- reactive({
