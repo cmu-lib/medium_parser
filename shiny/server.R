@@ -404,6 +404,17 @@ function(input, output, session) {
       arrange(desc(G2))
   })
   
+  keyness_target_doc_counts <- reactive({
+    textstat_frequency(filtered_dfm()) %>% 
+      select(feature, target_docfreq = docfreq)
+  })
+  
+  keyness_reference_doc_counts <- reactive({
+    only_ref_ids <- setdiff(rownames(reference_dfm()), rownames(filtered_dfm()))
+    textstat_frequency(reference_dfm()[only_ref_ids,]) %>% 
+      select(feature, reference_docfreq = docfreq)
+  })
+  
   keyness_stats_time <- reactive({
     withProgress({
       split_corpus() %>% 
@@ -441,7 +452,10 @@ function(input, output, session) {
   })
   
   keyness_stats <- reactive({
-    keyness_stats_central()
+    keyness_stats_central() %>% 
+      inner_join(keyness_target_doc_counts(), by = "feature") %>% 
+      inner_join(keyness_reference_doc_counts(), by = "feature") %>% 
+      select(feature, G2, es, target_termfreq = n_target, target_docfreq, reference_termfreq = n_reference, reference_docfreq, p)
   })
   
   
