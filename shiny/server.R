@@ -8,6 +8,7 @@ library(htmlwidgets)
 library(sparkline)
 library(DT)
 library(openxlsx)
+library(cowplot)
 
 function(input, output, session) {
   
@@ -235,11 +236,17 @@ function(input, output, session) {
   
   output$termsovertime_chart <- renderPlot({
     req(input$wordchart_tokens)
-    termsovertime_data() %>%
+    docfreq_data <- corpus_metadata() %>% 
+      ggplot(aes(x = date_published)) +
+      geom_histogram(bins = 100) +
+      theme_minimal()
+    termfreq_data <- termsovertime_data() %>%
       ggplot(aes(x = approx_date, y = percent_total, color = term)) +
       geom_line(size = 2) +
       scale_color_brewer(palette = "Dark2") +
-      theme_minimal()
+      theme_minimal() +
+      theme(legend.position = "bottom")
+    plot_grid(docfreq_data, termfreq_data, nrow = 2, rel_heights = c(1, 2), axis = "lbrt", align = "hv")
   }, height = 600)
   
   termsovertime_metadata <- reactive({
