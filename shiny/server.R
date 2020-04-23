@@ -227,11 +227,34 @@ function(input, output, session) {
   })
   
   termsovertime_data <- reactive({
-    single_termsovertime() %>% 
-      group_by(approx_date, term) %>%
-      summarize(
-        percent_total = n() / first(total_docs)
-      )
+    if (input$termsovertime_count_select == "ratio") {
+      single_termsovertime() %>% 
+        group_by(approx_date, term) %>%
+        summarize(
+          percent_total = n() / first(total_docs)
+        )
+    } else if (input$termsovertime_count_select == "absolute") {
+      single_termsovertime() %>% 
+        group_by(approx_date, term) %>%
+        summarize(
+          count = n()
+        )
+    }
+  })
+  
+  termfreq_chart <- reactive({
+    if (input$termsovertime_count_select == "ratio") {
+      p <- termsovertime_data() %>%
+        ggplot(aes(x = approx_date, y = percent_total, color = term))
+    } else if (input$termsovertime_count_select == "absolute") {
+      p <- termsovertime_data() %>%
+        ggplot(aes(x = approx_date, y = count, color = term))
+    }
+    
+    p + geom_line(size = 2) +
+      scale_color_brewer(palette = "Dark2") +
+      theme_minimal() +
+      theme(legend.position = "bottom")
   })
   
   output$termsovertime_chart <- renderPlot({
@@ -241,12 +264,7 @@ function(input, output, session) {
       ggplot(aes(x = approx_date, y = n)) +
       geom_line(size = 2) +
       theme_minimal()
-    termfreq_data <- termsovertime_data() %>%
-      ggplot(aes(x = approx_date, y = percent_total, color = term)) +
-      geom_line(size = 2) +
-      scale_color_brewer(palette = "Dark2") +
-      theme_minimal() +
-      theme(legend.position = "bottom")
+    termfreq_data <- termfreq_chart()
     plot_grid(docfreq_data, termfreq_data, nrow = 2, rel_heights = c(1, 2), axis = "lbrt", align = "hv", labels = c("Entire target corpus", "Selected terms"))
   }, height = 600)
   

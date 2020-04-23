@@ -30,6 +30,7 @@ termsovertime_tab <- tabItem(
       p("Begin typing to generate token suggestions. Click on a token and press \"Delete\" to remove it from the list.")
     ),
     box(
+      radioButtons("termsovertime_count_select", "Measurement type", choices = c("ratio", "absolute"), selected = "ratio"),
       plotOutput("termsovertime_chart"),
       width = 12,
       height = 650
