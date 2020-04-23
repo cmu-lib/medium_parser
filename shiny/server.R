@@ -458,8 +458,8 @@ function(input, output, session) {
     )
   })
   
-  output$keyword_summary <- renderText({
-    str_c(keyword_summary()$option, keyword_summary()$values, sep = " ", collapse = "\n")
+  output$keyword_summary <- renderTable({
+    keyword_summary()
   })
   
   target_authors <- reactive({

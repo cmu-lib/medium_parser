@@ -74,7 +74,7 @@ keyness_tab <- tabItem(
     box(
       width= 6,
       title="Current keyword selections",
-      pre(textOutput("keyword_summary"))
+      tableOutput("keyword_summary")
     )
   ),
   tabBox(
