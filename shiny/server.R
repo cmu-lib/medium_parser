@@ -494,7 +494,7 @@ function(input, output, session) {
         collapsed_corpus_include[1],
         collapsed_corpus_or[1],
         collapsed_corpus_exclude[1],
-        format(nrow(combined_dfm()), big.mark = ','),
+        format(nrow(reference_dfm()), big.mark = ','),
         collapsed_reference_corpora[1],
         collapsed_keyness_include[1],
         collapsed_keyness_or[1],
