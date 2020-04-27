@@ -9,7 +9,8 @@ library(progress)
 
 url_list <- read_lines("scraping/links.txt") %>% 
   str_match("^(.+)\\?source") %>% .[,2] %>% 
-  unique()
+  unique() %>% 
+  na.omit()
 
 db <- dbConnect(SQLite(), "scraping/medium.sqlite3")
 dbExecute(db, "PRAGMA foreign_keys = on")
