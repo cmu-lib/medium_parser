@@ -85,6 +85,32 @@ keyness_tab <- tabItem(
   )
 )
 
+term_comparison_tab <- tabItem(
+  tabName = "term_comparison",
+  h2("Term co-occurrence"),
+  fluidRow(
+    box(
+      width = 6,
+      selectizeInput("co_tokens", choices = NULL, selected = NULL, multiple = TRUE, label = "Choose terms to compare co-occurrence across target and reference corpora")
+    ),
+    box(
+      width= 6,
+      title="Current keyword selections",
+      tableOutput("coocurrence_keyword_summary")
+    )
+  ),
+  box(
+    width = 12,
+    title = "Target Corpus",
+    plotOutput("target_coocurrence_plot")
+  ),
+  box(
+    width = 12,
+    title = "Reference Corpus",
+    plotOutput("reference_coocurrence_plot")
+  )
+)
+
 corpus_inclusive <- selectizeInput("corpus_include", choices = NULL, selected = "", multiple = TRUE, label = "Must include ALL terms")
 
 corpus_or <- selectizeInput("corpus_or", choices = NULL, selected = "", multiple = TRUE, label = "Must include AT LEAST ONE term")
@@ -107,6 +133,7 @@ dash_sidebar <- dashboardSidebar(
     menuItem("Historical Term Frequency", tabName = "termsovertime", icon = icon("chart-line")),
     menuItem("TF-IDF", tabName = "corpus_tf_idf", icon = icon("sort-amount-down")),
     menuItem("Keyness", tabName = "keyness", icon = icon("chart-pie")),
+    menuItem("Co-occurrence", tabName = "term_comparison", icon = icon("braille")),
     menuItem("KWIC", tabName = "kwic", icon = icon("underline"))
   )
 )
@@ -116,6 +143,7 @@ dash_body <- dashboardBody(
     termsovertime_tab,
     corpus_tf_idf_tab,
     keyness_tab,
+    term_comparison_tab,
     kwic_tab
   )
 )

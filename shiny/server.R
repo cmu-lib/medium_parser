@@ -9,6 +9,7 @@ library(sparkline)
 library(DT)
 library(openxlsx)
 library(cowplot)
+library(ComplexUpset)
 
 function(input, output, session) {
   
@@ -176,6 +177,10 @@ function(input, output, session) {
                          selected = NULL,
                          server = TRUE)
     updateSelectizeInput(session, "keyness_exclude",
+                         choices = x,
+                         selected = NULL,
+                         server = TRUE)
+    updateSelectizeInput(session, "co_tokens",
                          choices = x,
                          selected = NULL,
                          server = TRUE)
@@ -563,4 +568,38 @@ function(input, output, session) {
       write.xlsx(l, file = file)
     }
   )
+  
+  # Term combo plots ----
+  
+  co_occurrence_dm <- function(dfm, tok) {
+    # Select only the targeted terms from the dfm, and then remove any documentes without any of those terms
+    choice_dfm <- dfm_match(dfm, tok)
+    choice_sums <- rowSums(choice_dfm > 0)
+    choice_dfm[choice_sums > 0,] %>% 
+      convert(to = "data.frame") %>%
+      select(-document) %>% 
+      mutate_all(as.logical)
+  }
+  
+  target_coocurrence_matrix <- reactive({
+    co_occurrence_dm(filtered_dfm(), input$co_tokens)
+  })
+  
+  reference_coocurrence_matrix <- reactive({
+    co_occurrence_dm(reference_dfm(), input$co_tokens)
+  })
+  
+  output$coocurrence_keyword_summary <- renderTable({
+    keyword_summary()
+  })
+  
+  output$target_coocurrence_plot <- renderPlot({
+    req(input$co_tokens)
+    upset(target_coocurrence_matrix(), intersect = input$co_tokens, name = "Target corpus term co-occurrence", min_size = 0)
+  })
+  
+  output$reference_coocurrence_plot <- renderPlot({
+    req(input$co_tokens)
+    upset(reference_coocurrence_matrix(), intersect = input$co_tokens, name = "Target corpus term co-occurrence", min_size = 0)
+  })
 }
