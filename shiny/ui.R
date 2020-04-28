@@ -91,7 +91,8 @@ term_comparison_tab <- tabItem(
   fluidRow(
     box(
       width = 6,
-      selectizeInput("co_tokens", choices = NULL, selected = NULL, multiple = TRUE, label = "Choose terms to compare co-occurrence across target and reference corpora")
+      selectizeInput("co_tokens", choices = NULL, selected = NULL, multiple = TRUE, label = "Choose terms to compare co-occurrence across target and reference corpora"),
+      p("You must choose at least 2 terms in order to render the comparison plots. ", strong("Strongly recommend using the stemmed corpus in order to do useful comparsions."))
     ),
     box(
       width= 6,
