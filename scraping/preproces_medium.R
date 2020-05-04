@@ -3,7 +3,6 @@
 library(tidyverse)
 library(drake)
 library(quanteda)
-library(rmarkdown)
 
 source("scraping/parse_medium.R")
 
