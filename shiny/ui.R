@@ -79,9 +79,21 @@ keyness_tab <- tabItem(
   ),
   tabBox(
     width = 12,
-    tabPanel("Keyness", DT::dataTableOutput("keyness_table")),
-    tabPanel("Target Authors", DT::dataTableOutput("target_authors_table")),
-    tabPanel("Reference Authors", DT::dataTableOutput("reference_authors_table"))
+    tabPanel("Keyness",
+             box(title = "Definitions", collapsible = TRUE, width = 12, collapsed = TRUE, 
+                 tags$ul(
+                   tags$li(strong("Feature"), "a token from the corpus"),
+                   tags$li(strong("G2"), "G-squared, a measure of the likelihood that this feature is found in the target corpus and not in the reference corpus. This captures how disporportionaltely more (or less, if G2 is negative) the given feature appears in the target corpus versus the reference corpus. G-squared attempts to normalize scores based on the actual frequency of features in the comparison, so features terms that show up disproportionately more in the target corpus, but which still only have a small absolute number of appearances, are ranked lower than terms that show up more frequently."),
+                   tags$li(strong("es"), "Effect size, an alternate measure of how disproportionately a given feature shows up in the target corpus compared to the reference corpus. Unlike g-squared, this measure does not attempt to adjust its ranking based on the absolute number of times a feature appears in either corpus. Therefore, a very rarely used term (e.g. \"trolley\") might have a high effect size in certain comparisons, but a lower g-squared. It is useful to look at both measures."),
+                   tags$li(strong("target_termfreq"), "How many times is this token used across all the documents in the target corpus?"),
+                   tags$li(strong("target_docfreq"), "How many documents in the target corpus use this term at least once?"),
+                   tags$li(strong("reference_termfreq"), "How many times is this token used across all the documents in the refrence corpus?"),
+                   tags$li(strong("reference_docfreq"), "How many documents in the reference corpus use this term at least once?"),
+                   tags$li(strong("p"), "The p-value of the keyness measure; how likely is it that the same measure could be found by chance in a corpus of randomly-distributed terms?")
+                 )),
+             DT::dataTableOutput("keyness_table")),
+    tabPanel("Target Authors", p("A count of the number of articles written by each author in the target corpus"), DT::dataTableOutput("target_authors_table")),
+    tabPanel("Reference Authors", p("A count of the number of articles written by each author in the reference corpus"), DT::dataTableOutput("reference_authors_table"))
   )
 )
 
