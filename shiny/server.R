@@ -289,6 +289,27 @@ function(input, output, session) {
     termsovertime_metadata()
   }, escape = FALSE, options = list(pageLength = 100, searching = FALSE))
   
+  # Top terms ----
+  
+  target_top_termfreq <- reactive({
+    filtered_dfm() %>% 
+      textstat_frequency() %>% 
+      slice(1:100)
+  })
+  
+  output$termfreq <- DT::renderDataTable({
+    target_top_termfreq()
+  }, options = list(pageLength = 100, searching = FALSE))
+  
+  output$download_termfreq <- downloadHandler(
+    filename = "top-xlsx",
+    content = function(file) {
+      l <- list("top_100" = target_top_termfreq(),
+                "settings" = keyword_summary())
+      write.xlsx(l, file = file)
+    }
+  )
+  
   # KWIC ----
   
   process_kwic <- function(corp, tokens) {

@@ -43,6 +43,13 @@ termsovertime_tab <- tabItem(
   )
 )
 
+top_termfreq_tab <- tabItem(
+  tabName = "top_termfreq",
+  h2("Target corpus top 100 terms"),
+  downloadButton("download_termfreq", "Download top frequencies"),
+  DT::dataTableOutput("termfreq")
+)
+
 kwic_tab <- tabItem(
   tabName = "kwic",
   h2("Keywords in context"),
@@ -144,6 +151,7 @@ dash_sidebar <- dashboardSidebar(
   corpus_data,
   sidebarMenu(
     menuItem("Historical Term Frequency", tabName = "termsovertime", icon = icon("chart-line")),
+    menuItem("Top Terms", tabName = "top_termfreq", icon = icon("chart-line")),
     menuItem("TF-IDF", tabName = "corpus_tf_idf", icon = icon("sort-amount-down")),
     menuItem("Keyness", tabName = "keyness", icon = icon("chart-pie")),
     menuItem("Co-occurrence", tabName = "term_comparison", icon = icon("braille")),
@@ -154,6 +162,7 @@ dash_sidebar <- dashboardSidebar(
 dash_body <- dashboardBody(
   tabItems(
     termsovertime_tab,
+    top_termfreq_tab,
     corpus_tf_idf_tab,
     keyness_tab,
     term_comparison_tab,
