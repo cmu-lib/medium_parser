@@ -151,7 +151,7 @@ dash_sidebar <- dashboardSidebar(
   corpus_data,
   sidebarMenu(
     menuItem("Historical Term Frequency", tabName = "termsovertime", icon = icon("chart-line")),
-    menuItem("Top Terms", tabName = "top_termfreq", icon = icon("chart-line")),
+    menuItem("Top 100 Terms", tabName = "top_termfreq", icon = icon("table")),
     menuItem("TF-IDF", tabName = "corpus_tf_idf", icon = icon("sort-amount-down")),
     menuItem("Keyness", tabName = "keyness", icon = icon("chart-pie")),
     menuItem("Co-occurrence", tabName = "term_comparison", icon = icon("braille")),
