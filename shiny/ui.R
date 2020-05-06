@@ -33,7 +33,7 @@ termsovertime_tab <- tabItem(
       radioButtons("termsovertime_count_select", "Measurement type", choices = c("ratio", "absolute"), selected = "ratio"),
       plotOutput("termsovertime_chart"),
       width = 12,
-      height = 650
+      height = 750
     ),
     box(
       DT::dataTableOutput("termsovertime_metadata"),
