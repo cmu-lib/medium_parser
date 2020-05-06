@@ -6,7 +6,7 @@ dash_header <- dashboardHeader(
   title = "Medium Corpus"
 )
 
-stem_picker <- radioButtons("stem_choices", choices = c("original", "stemmed"), selected = "original", label = "Use original tokens, or stemmed tokens")
+stem_picker <- radioButtons("stem_choices", choices = c("original", "stemmed"), selected = "stemmed", label = "Use original tokens, or stemmed tokens")
 
 core_corpus_selector <- selectizeInput("available_corpora", choices = NULL, selected = NULL, multiple = TRUE, label = "Original Medium.com search terms")
 
