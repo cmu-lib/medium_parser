@@ -46,6 +46,7 @@ termsovertime_tab <- tabItem(
 top_termfreq_tab <- tabItem(
   tabName = "top_termfreq",
   h2("Target corpus top 100 terms"),
+  p("Top 100 terms based on the number of times the term is used across the target corpus."),
   downloadButton("download_termfreq", "Download top frequencies"),
   DT::dataTableOutput("termfreq")
 )
